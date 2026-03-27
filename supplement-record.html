@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保健品服用紀錄</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;display:flex;justify-content:center;align-items:center;}
+
+/* ── Phone ── */
+.phone{width:390px;height:844px;background:#fff;border-radius:50px;overflow:hidden;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);}
+
+/* ── Screens ── */
+.screen{position:absolute;inset:0;background:#fff;display:none;flex-direction:column;overflow:hidden;}
+.screen.active{display:flex;}
+.screen.enter      {animation:sIn   .28s cubic-bezier(.4,0,.2,1) both;}
+.screen.exit       {animation:sOut  .28s cubic-bezier(.4,0,.2,1) both;}
+.screen.enter-back {animation:sInB  .28s cubic-bezier(.4,0,.2,1) both;}
+.screen.exit-back  {animation:sOutB .28s cubic-bezier(.4,0,.2,1) both;}
+@keyframes sIn   {from{transform:translateX(100%)} to{transform:translateX(0)}}
+@keyframes sOut  {from{transform:translateX(0)} to{transform:translateX(-26%)}}
+@keyframes sInB  {from{transform:translateX(-26%)} to{transform:translateX(0)}}
+@keyframes sOutB {from{transform:translateX(0)} to{transform:translateX(100%)}}
+
+/* ── Status Bar ── */
+.sb{display:flex;justify-content:space-between;align-items:center;padding:16px 24px 4px;flex-shrink:0;}
+.sb-time{font-size:15px;font-weight:700;}
+.sb-time.light{color:#374151;}
+.sb-time.dark{color:#fff;}
+.sb-icons{font-size:12px;display:flex;gap:4px;align-items:center;}
+
+/* ── Nav ── */
+.nav{display:flex;align-items:center;padding:4px 14px 10px;flex-shrink:0;gap:4px;}
+.nav-title{flex:1;text-align:center;font-size:20px;font-weight:700;color:#374151;}
+.nav-title.sm{font-size:17px;}
+.ic{width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:9px;color:#374151;font-size:22px;transition:background .12s;flex-shrink:0;}
+.ic:active{background:#F3F4F6;}
+
+/* ── Date Nav ── */
+.date-nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:2px 24px 10px;flex-shrink:0;}
+.darr{cursor:pointer;color:#004F51;font-size:22px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:background .12s;}
+.darr:active{background:rgba(0,79,81,.1);}
+.dlbl{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#374151;}
+.dlbl i{font-size:16px;color:#374151;}
+
+/* ── Segment ── */
+.seg{display:flex;margin:0 16px 16px;background:#F3F4F6;border-radius:10px;padding:3px;flex-shrink:0;}
+.stab{flex:1;text-align:center;padding:9px;font-size:14px;font-weight:500;color:#9CA3AF;cursor:pointer;border-radius:8px;transition:all .18s;user-select:none;}
+.stab.on{background:#fff;color:#004F51;font-weight:700;box-shadow:0 1px 6px rgba(0,0,0,.1);}
+
+/* ── Search Bar ── */
+.srch{display:flex;align-items:center;gap:8px;margin:0 16px 12px;background:#F9FAFB;border:1.5px solid #E5E7EB;border-radius:10px;padding:10px 14px;flex-shrink:0;transition:border-color .15s;}
+.srch.focused{border-color:#004F51;}
+.srch i{font-size:16px;color:#9CA3AF;flex-shrink:0;}
+.srch input{border:none;outline:none;background:transparent;font-size:14px;color:#374151;font-family:inherit;flex:1;min-width:0;}
+.srch input::placeholder{color:#9CA3AF;}
+.srch .xclear{cursor:pointer;color:#9CA3AF;font-size:18px;}
+
+/* ── Scroll ── */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll::-webkit-scrollbar{display:none;}
+
+/* ── Section Label ── */
+.sec-lbl{display:flex;align-items:center;gap:6px;padding:10px 20px 8px;font-size:12px;color:#9CA3AF;font-weight:500;flex-shrink:0;}
+.sec-lbl i{font-size:14px;}
+
+/* ── Product Circular Image ── */
+.p-img{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#F3F4F6;}
+.p-img-lg{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#F3F4F6;}
+
+/* ── Recent Record ── */
+.rec-row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #F3F4F6;cursor:pointer;transition:background .1s;}
+.rec-row:active{background:#F9FAFB;}
+.rec-info{flex:1;}
+.rec-name{font-size:15px;font-weight:700;color:#374151;}
+.rec-meta{font-size:12px;color:#9CA3AF;margin-top:2px;}
+.add-pill{width:28px;height:28px;border-radius:50%;background:rgba(0,79,81,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .12s;}
+.add-pill:active{background:rgba(0,79,81,.2);}
+.add-pill i{font-size:16px;color:#004F51;}
+
+/* ── DB Header ── */
+.db-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 8px;flex-shrink:0;}
+.db-ttl{font-size:14px;font-weight:700;color:#374151;}
+.db-cnt{font-size:12px;color:#9CA3AF;}
+
+/* ── Cat Chips ── */
+.cats{display:flex;gap:6px;padding:0 20px 10px;overflow-x:auto;flex-shrink:0;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;}
+.cats::after{content:'';padding-right:4px;flex-shrink:0;}
+.cats::-webkit-scrollbar{display:none;}
+.ctab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;transition:all .15s;user-select:none;}
+.ctab.on{background:#004F51;color:#fff;font-weight:700;}
+.ctab:not(.on){background:#fff;color:#6B7280;border:1.5px solid #E5E7EB;}
+.ctab:not(.on):active{background:#F3F4F6;}
+
+/* ── Product Row (with +) ── */
+.prow{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #F3F4F6;cursor:pointer;transition:background .1s;}
+.prow:active{background:#F9FAFB;}
+.p-info{flex:1;}
+.p-name{font-size:15px;font-weight:700;color:#374151;}
+.p-sub{font-size:11px;color:#9CA3AF;margin-top:3px;font-weight:500;}
+
+/* ── Product Row (chevron, brand products) ── */
+.bprow{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid #F3F4F6;cursor:pointer;transition:background .1s;}
+.bprow:active{background:#F9FAFB;}
+.bp-info{flex:1;}
+.bp-name{font-size:15px;font-weight:700;color:#374151;}
+.bp-sub{font-size:11px;color:#9CA3AF;margin-top:3px;}
+.chev i{font-size:18px;color:#D1D4D9;}
+
+/* ── Manual Tab ── */
+.man-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 20px;display:flex;flex-direction:column;gap:10px;}
+.man-scroll::-webkit-scrollbar{display:none;}
+.man-card{background:#fff;border-radius:14px;border:1px solid #F2F3F5;overflow:hidden;flex-shrink:0;}
+.man-row2{display:flex;align-items:center;gap:14px;padding:18px 16px;cursor:pointer;transition:background .1s;}
+.man-row2:active{background:#F9FAFB;}
+.man-ic2{width:48px;height:48px;border-radius:12px;background:#E6F4EF;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.man-ic2 i{font-size:22px;color:#169E6B;}
+.man-txt{flex:1;min-width:0;}
+.man-lbl2{font-size:16px;font-weight:600;color:#374151;margin-bottom:3px;}
+.man-sub{font-size:13px;color:#6B7280;}
+.man-chev i{font-size:18px;color:#9CA3AF;}
+/* manual recent records — text only, no image */
+.man-rec{display:flex;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid #E5E7EB;cursor:pointer;transition:background .1s;}
+.man-rec:last-child{border-bottom:none;}
+.man-rec:active{opacity:.8;}
+.man-rec-info{flex:1;}
+.man-rec-name{font-size:15px;font-weight:700;color:#374151;}
+.man-rec-meta{font-size:12px;color:#9CA3AF;margin-top:2px;}
+/* manual input form */
+.mf-group{display:flex;flex-direction:column;gap:8px;}
+.mf-lbl{font-size:13px;color:#9CA3AF;font-weight:500;}
+.mf-lbl em{color:#169E6B;font-style:normal;}
+.mf-inp{background:#F3F4F6;border-radius:10px;padding:14px 16px;font-size:15px;color:#374151;font-family:inherit;border:none;outline:none;width:100%;}
+.mf-inp:focus{outline:2px solid #004F51;}
+.mf-dose{background:#F3F4F6;border-radius:10px;display:flex;align-items:center;height:64px;}
+.mf-stepper{display:flex;align-items:center;gap:0;padding:0 16px;}
+.mf-minus{width:40px;height:40px;border-radius:50%;border:1.5px solid #D1D5DB;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:#374151;transition:opacity .12s;}
+.mf-minus:active{opacity:.7;}
+.mf-plus{width:40px;height:40px;border-radius:50%;background:#169E6B;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:#fff;transition:opacity .12s;}
+.mf-plus:active{opacity:.7;}
+.mf-qty{font-size:24px;font-weight:700;color:#169E6B;min-width:44px;text-align:center;}
+.mf-vdiv{width:1px;height:28px;background:#D1D5DB;flex-shrink:0;}
+.mf-unit{display:flex;align-items:center;gap:4px;padding:0 16px;font-size:15px;color:#374151;cursor:pointer;}
+.mf-unit i{font-size:16px;color:#374151;}
+.mf-sec-hdr{display:flex;align-items:center;justify-content:space-between;}
+.mf-add{font-size:14px;font-weight:500;color:#169E6B;cursor:pointer;}
+.mf-nut-row{background:#F3F4F6;border-radius:10px;display:flex;align-items:center;padding:10px 14px;gap:8px;}
+.mf-nut-inp{border:none;outline:none;background:transparent;font-family:inherit;}
+.mf-nut-inp-name{flex:1;font-size:15px;font-weight:500;color:#374151;min-width:0;}
+.mf-nut-inp-name::placeholder{color:#C4C8CE;}
+.mf-nut-inp-val{width:52px;font-size:15px;font-weight:700;color:#169E6B;text-align:right;}
+.mf-nut-inp-val::placeholder{color:#C4C8CE;}
+.mf-nut-unit{font-size:13px;color:#9CA3AF;flex-shrink:0;}
+.mf-nut-del{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9CA3AF;font-size:17px;flex-shrink:0;border-radius:6px;transition:background .12s;}
+.mf-nut-del:active{background:rgba(0,0,0,.06);}
+
+/* ── Top Tabs (search screen) ── */
+.ttabs{display:flex;flex:1;border-bottom:none;}
+.ttab{flex:1;text-align:center;padding:12px 0 10px;font-size:15px;font-weight:500;color:#9CA3AF;cursor:pointer;position:relative;transition:color .15s;user-select:none;}
+.ttab.on{color:#004F51;font-weight:700;}
+.ttab.on::after{content:'';position:absolute;bottom:-1px;left:25%;right:25%;height:2px;background:#004F51;border-radius:2px;}
+
+/* ── Brand Row ── */
+.alpha-grp{padding:8px 20px 4px;background:#FAFAFA;}
+.alpha-grp span{font-size:11px;font-weight:700;color:#6B7280;letter-spacing:.05em;}
+.brand-row{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid #F3F4F6;font-size:15px;color:#374151;cursor:pointer;transition:background .1s;}
+.brand-row:active{background:#F9FAFB;}
+.brand-row i{font-size:16px;color:#D1D4D9;}
+.brand-row.hl{color:#004F51;font-weight:600;}
+.brand-row.hl i{color:#004F51;}
+.hl-txt{color:#004F51;font-weight:700;}
+
+/* Search results */
+.res-hdr{padding:10px 20px 8px;font-size:13px;font-weight:700;color:#374151;flex-shrink:0;}
+.res-hdr em{color:#004F51;font-style:normal;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:240px;gap:14px;}
+.empty-state i{font-size:52px;color:#D1D4D9;}
+.empty-ttl{font-size:15px;font-weight:600;color:#9CA3AF;text-align:center;}
+.empty-sub{font-size:13px;color:#C4C8CE;text-align:center;}
+
+.alpha-side{position:absolute;right:5px;top:50%;transform:translateY(-20%);display:flex;flex-direction:column;align-items:center;z-index:10;}
+.alpha-side span{font-size:10px;color:#9CA3AF;cursor:pointer;padding:2px 4px;border-radius:3px;font-weight:500;transition:all .1s;}
+.alpha-side span:active{background:#004F51;color:#fff;}
+
+/* ── Brand Header ── */
+.brand-hdr{display:flex;align-items:center;gap:14px;padding:12px 20px;flex-shrink:0;}
+.b-logo{width:48px;height:48px;background:#169E6B;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0;}
+.b-nm{font-size:17px;font-weight:700;color:#374151;}
+.b-desc{font-size:12px;color:#9CA3AF;margin-top:2px;}
+.divl{height:1px;background:#E5E7EB;flex-shrink:0;}
+
+/* ── Camera Screen ── */
+.cam-bg{background:#18232D;}
+.cam-sb{display:flex;justify-content:space-between;align-items:center;padding:16px 20px 4px;}
+.cam-time{font-size:15px;font-weight:700;color:#fff;}
+.cam-nav{display:flex;align-items:center;justify-content:space-between;padding:6px 16px 10px;}
+.cam-btn{width:44px;height:44px;background:rgba(255,255,255,.14);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .12s;}
+.cam-btn:active{background:rgba(255,255,255,.25);}
+.cam-btn i{font-size:20px;color:#fff;}
+.cam-ttl{color:#fff;font-size:17px;font-weight:700;}
+.cam-vp{flex:1;position:relative;background:#18232D;overflow:hidden;}
+.scan-line{position:absolute;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent 0%,#00BFA5 20%,#004F51 50%,#00BFA5 80%,transparent 100%);top:50%;border-radius:2px;animation:scan 2.4s ease-in-out infinite;}
+@keyframes scan{0%,100%{top:30%}50%{top:70%}}
+.scan-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.42);color:rgba(255,255,255,.88);font-size:14px;padding:10px 22px;border-radius:24px;white-space:nowrap;}
+.cam-bar{background:#0D1117;display:flex;align-items:center;justify-content:space-between;padding:22px 44px 34px;flex-shrink:0;}
+.cam-gal{width:46px;height:46px;background:rgba(255,255,255,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.cam-gal i{font-size:22px;color:#fff;}
+.cam-cap{width:70px;height:70px;border-radius:50%;background:#fff;border:5px solid rgba(255,255,255,.35);cursor:pointer;box-shadow:0 0 0 7px rgba(255,255,255,.12);transition:transform .12s;}
+.cam-cap:active{transform:scale(.92);}
+.cam-flip{width:46px;height:46px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.cam-flip i{font-size:22px;color:#fff;}
+
+/* ── Tab Content Animation ── */
+@keyframes tabIn {from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.tab-in{animation:tabIn .2s ease both;}
+/* ── Date Label Slide ── */
+@keyframes datePop{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}
+.date-pop{animation:datePop .18s ease both;}
+
+/* ── Calendar Picker ── */
+.cal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);pointer-events:none;transition:background .28s;z-index:200;}
+.cal-overlay.show{background:rgba(0,0,0,.42);pointer-events:auto;}
+.cal-panel{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;transform:translateY(105%);transition:transform .32s cubic-bezier(.4,0,.2,1);z-index:201;padding:0 0 28px;}
+.cal-panel.open{transform:translateY(0);}
+.cal-handle{width:36px;height:4px;background:#D1D4D9;border-radius:2px;margin:12px auto 8px;}
+.cal-hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 20px 12px;}
+.cal-month{font-size:17px;font-weight:700;color:#374151;}
+.cal-arr{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;cursor:pointer;font-size:22px;color:#374151;transition:background .12s;}
+.cal-arr:active{background:#F3F4F6;}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);padding:0 16px;margin-bottom:4px;}
+.cal-wd{text-align:center;font-size:11px;font-weight:700;color:#9CA3AF;padding:4px 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:0 16px;gap:2px 0;}
+.cal-day{height:40px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#374151;border-radius:10px;cursor:pointer;transition:background .12s;font-weight:500;}
+.cal-day:active{background:#F3F4F6;}
+.cal-day.other{color:#D1D4D9;}
+.cal-day.today{color:#004F51;font-weight:700;}
+.cal-day.today::after{content:'';display:block;width:4px;height:4px;background:#004F51;border-radius:50%;position:absolute;bottom:4px;}
+.cal-day.today{position:relative;padding-bottom:4px;}
+.cal-day.sel{background:#004F51 !important;color:#fff !important;font-weight:700;}
+.cal-day.sel.today::after{background:#fff;}
+
+/* ── Bottom Sheet Overlay ── */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s;z-index:100;}
+.overlay.show{background:rgba(0,0,0,.48);pointer-events:auto;}
+.bs{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;transform:translateY(105%);transition:transform .34s cubic-bezier(.4,0,.2,1);z-index:101;display:flex;flex-direction:column;max-height:90%;}
+.bs.open{transform:translateY(0);}
+.bs-handle{width:36px;height:4px;background:#D1D4D9;border-radius:2px;margin:12px auto 4px;flex-shrink:0;}
+.bs-nav{display:flex;align-items:center;justify-content:space-between;padding:4px 20px 12px;flex-shrink:0;}
+.bs-ttl{font-size:18px;font-weight:700;color:#374151;}
+.bs-x{width:32px;height:32px;background:#F3F4F6;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .12s;}
+.bs-x:active{background:#E5E7EB;}
+.bs-x i{font-size:18px;color:#6B7280;}
+.bs-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px 28px;display:flex;flex-direction:column;gap:22px;}
+.bs-scroll::-webkit-scrollbar{display:none;}
+
+/* CTA (manual sheet) */
+.cta{background:#169E6B;color:#fff;border:none;border-radius:12px;padding:16px;font-size:16px;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;width:100%;transition:opacity .15s,transform .1s;flex-shrink:0;}
+.cta:active{opacity:.88;transform:scale(.98);}
+.cta i{font-size:18px;}
+
+/* ── Record Confirm Sheet ── */
+.rc-hdr{display:flex;align-items:center;gap:14px;padding:14px 20px 16px;flex-shrink:0;}
+.rc-prod-img{width:56px;height:56px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#F3F4F6;}
+.rc-prod-info{flex:1;min-width:0;}
+.rc-prod-name{font-size:20px;font-weight:700;color:#374151;}
+.rc-prod-brand{font-size:14px;color:#9CA3AF;margin-top:3px;}
+.rc-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9CA3AF;font-size:20px;flex-shrink:0;}
+.rc-inner{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px 4px;display:flex;flex-direction:column;gap:12px;}
+.rc-inner::-webkit-scrollbar{display:none;}
+.rc-card{border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;}
+.rc-dose-row{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;}
+.rc-dose-lbl{font-size:15px;font-weight:700;color:#374151;}
+.rc-stepper{display:flex;align-items:center;gap:10px;}
+.rc-minus{width:36px;height:36px;border-radius:50%;border:1.5px solid #D1D5DB;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:opacity .12s;}
+.rc-minus:active,.rc-plus:active{opacity:.7;}
+.rc-minus i{font-size:18px;color:#374151;}
+.rc-num{font-size:20px;font-weight:700;color:#169E6B;min-width:26px;text-align:center;}
+.rc-unit{font-size:14px;color:#374151;}
+.rc-plus{width:36px;height:36px;border-radius:50%;background:#169E6B;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:opacity .12s;}
+.rc-plus i{font-size:18px;color:#fff;}
+.rc-hdivider{height:1px;background:#E5E7EB;margin:0 20px;}
+.rc-info-row{display:flex;align-items:center;gap:6px;padding:10px 20px;font-size:12px;color:#9CA3AF;}
+.rc-info-row i{font-size:14px;flex-shrink:0;}
+.rc-nut-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;cursor:pointer;user-select:none;}
+.rc-nut-hdr-lbl{font-size:15px;font-weight:700;color:#374151;}
+.rc-nut-cnt{display:flex;align-items:center;gap:2px;font-size:13px;color:#9CA3AF;}
+.rc-nut-cnt i{font-size:14px;transition:transform .2s;}
+.rc-nut-cnt i.flip{transform:rotate(180deg);}
+.rc-nut-row{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid #F2F2F2;}
+.rc-nut-name{font-size:14px;color:#374151;}
+.rc-nut-val{font-size:14px;font-weight:500;color:#169E6B;}
+.rc-btns{display:flex;gap:12px;padding:12px 20px 20px;flex-shrink:0;}
+.rc-btn-cancel{flex:1;height:52px;background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;font-size:16px;font-weight:700;color:#374151;font-family:inherit;cursor:pointer;transition:background .12s;}
+.rc-btn-cancel:active{background:#F9FAFB;}
+.rc-btn-confirm{flex:1;height:52px;background:#169E6B;border:none;border-radius:12px;font-size:16px;font-weight:700;color:#fff;font-family:inherit;cursor:pointer;transition:opacity .12s;}
+.rc-btn-confirm:active{opacity:.88;}
+
+/* ── Success Popup ── */
+.suc-pop{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;transform:translateY(105%);transition:transform .34s cubic-bezier(.4,0,.2,1);z-index:103;padding:0 20px 28px;}
+.suc-pop.open{transform:translateY(0);}
+@keyframes sucCheck{0%{transform:scale(0);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.suc-ring{width:72px;height:72px;background:#E6F4EF;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:24px auto 14px;}
+.suc-ring i{font-size:36px;color:#169E6B;animation:sucCheck .4s cubic-bezier(.34,1.56,.64,1) both;}
+.suc-ring i.animate{animation:sucCheck .4s cubic-bezier(.34,1.56,.64,1) both;}
+.suc-ttl{font-size:20px;font-weight:700;color:#374151;text-align:center;}
+.suc-meta{font-size:14px;color:#9CA3AF;text-align:center;margin-top:6px;line-height:1.6;}
+.suc-card{background:#F9FAFB;border-radius:12px;padding:14px 16px;margin:16px 0 20px;display:flex;flex-direction:column;gap:10px;}
+.suc-row{display:flex;justify-content:space-between;align-items:center;}
+.suc-k{font-size:13px;color:#9CA3AF;}
+.suc-v{font-size:13px;font-weight:600;color:#374151;}
+.suc-div{height:1px;background:#E5E7EB;}
+.suc-btns{display:flex;gap:10px;}
+.suc-btn-home{flex:1;height:52px;background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;font-size:15px;font-weight:700;color:#374151;font-family:inherit;cursor:pointer;transition:background .12s;}
+.suc-btn-home:active{background:#F9FAFB;}
+.suc-btn-cont{flex:1;height:52px;background:#169E6B;border:none;border-radius:12px;font-size:15px;font-weight:700;color:#fff;font-family:inherit;cursor:pointer;transition:opacity .12s;}
+.suc-btn-cont:active{opacity:.88;}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- ══════════════════════════
+     S1 · 新增保健品服用紀錄
+══════════════════════════ -->
+<div class="screen active" id="s-home">
+  <div class="sb"><span class="sb-time light">9:41</span><div class="sb-icons" style="color:#374151"><i class="ri-wifi-line" style="font-size:14px"></i><i class="ri-battery-2-charge-line" style="font-size:16px"></i></div></div>
+  <div class="nav">
+    <div class="ic" onclick="back()"><i class="ri-arrow-left-s-line"></i></div>
+    <div class="nav-title sm">新增保健品服用紀錄</div>
+    <div class="ic"></div>
+  </div>
+  <div class="date-nav">
+    <div class="darr" onclick="changeDate(-1)"><i class="ri-arrow-left-s-line"></i></div>
+    <div class="dlbl" id="date-lbl" onclick="openCal()" style="cursor:pointer;"><i class="ri-calendar-line"></i> <span id="date-txt">今天</span></div>
+    <div class="darr" onclick="changeDate(1)"><i class="ri-arrow-right-s-line"></i></div>
+  </div>
+  <div class="seg">
+    <div class="stab on" id="h-lib-t" onclick="homeTab('lib')">資料庫</div>
+    <div class="stab"    id="h-man-t" onclick="homeTab('man')">手動輸入</div>
+  </div>
+  <div id="home-srch" class="srch" style="margin:0 16px 10px;cursor:pointer;" onclick="go('s-brand-search')">
+    <i class="ri-search-line"></i>
+    <span style="font-size:14px;color:#9CA3AF;flex:1;user-select:none;">請輸入品牌名稱或產品名稱</span>
+  </div>
+
+  <!-- 資料庫 -->
+  <div id="h-lib" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+    <!-- Fixed cat bar (mirrors 澳佳寶 style) -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 10px;flex-shrink:0;">
+      <div class="cats" id="hcats" style="margin:0;padding:0 0 0 0;flex:1;">
+        <div class="ctab on" onclick="setCat(this,'hcats')">全部</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">維他命</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">礦物質</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">魚油</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">益生菌</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">葉黃素</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">膠原蛋白</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">輔酶Q10</div>
+        <div class="ctab" onclick="setCat(this,'hcats')">蛋白質</div>
+      </div>
+      <span class="db-cnt" id="h-lib-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">8 項</span>
+    </div>
+    <div class="scroll">
+      <div class="sec-lbl"><i class="ri-history-line"></i> 最近紀錄</div>
+      <div class="rec-row" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','DHC · 維他命B群 100錠')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitb/100/100'">
+        <div class="rec-info"><div class="rec-name">維他命B群</div><div class="rec-meta">DHC · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="rec-row" onclick="openBS('頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fishoil/100/100'">
+        <div class="rec-info"><div class="rec-name">頂級魚油</div><div class="rec-meta">Cofit · 2顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="rec-row" onclick="openBS('綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 綜合維他命')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/multi/100/100'">
+        <div class="rec-info"><div class="rec-name">綜合維他命</div><div class="rec-meta">善存 · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+
+      <div class="db-hdr"><span class="db-ttl">保健品資料庫</span></div>
+      <div class="prow" data-cat="維他命" onclick="openBS('維他命D3','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','Cofit · 維他命D3 1000IU')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitd/100/100'">
+        <div class="p-info"><div class="p-name">維他命D3</div><div class="p-sub">Cofit · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="維他命" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Cofit · 維他命B群 100錠')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitb2/100/100'">
+        <div class="p-info"><div class="p-name">維他命B群</div><div class="p-sub">Cofit · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="葉黃素" onclick="openBS('智利酒果晶菠菜葉黃素','https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop','Cofit · 葉黃素 10mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/lutein/100/100'">
+        <div class="p-info"><div class="p-name">智利酒果晶菠菜葉黃素</div><div class="p-sub">Cofit · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="礦物質" onclick="openBS('Cofit 鎂日補給錠','https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop','Cofit · 鎂片 250mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/mag/100/100'">
+        <div class="p-info"><div class="p-name">Cofit 鎂日補給錠</div><div class="p-sub">Cofit · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="膠原蛋白" onclick="openBS('極濃透明質酸鈉','https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop','Cofit · 透明質酸 500mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/hya/100/100'">
+        <div class="p-info"><div class="p-name">極濃透明質酸鈉</div><div class="p-sub">Cofit · 2顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="魚油" onclick="openBS('深海魚油 1000mg','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fish3/100/100'">
+        <div class="p-info"><div class="p-name">深海魚油 1000mg</div><div class="p-sub">Cofit · 2顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="益生菌" onclick="openBS('益生菌 300億','https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop','Cofit · 益生菌 300億')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/prob2/100/100'">
+        <div class="p-info"><div class="p-name">益生菌 300億</div><div class="p-sub">Cofit · 1包</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手動輸入 -->
+  <div id="h-man" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="man-scroll">
+      <!-- Action card -->
+      <div class="man-card">
+        <div class="man-row2" onclick="openManBS()">
+          <div class="man-ic2"><i class="ri-pencil-line"></i></div>
+          <div class="man-txt">
+            <div class="man-lbl2">手動輸入品項</div>
+            <div class="man-sub">輸入品名、品牌與劑量，快速紀錄</div>
+          </div>
+          <div class="man-chev"><i class="ri-arrow-right-s-line"></i></div>
+        </div>
+        <div class="divl"></div>
+        <div class="man-row2" onclick="go('s-camera')">
+          <div class="man-ic2"><i class="ri-camera-line"></i></div>
+          <div class="man-txt">
+            <div class="man-lbl2">拍照自動辨識</div>
+            <div class="man-sub">拍攝產品或營養標示，自動填寫資訊</div>
+          </div>
+          <div class="man-chev"><i class="ri-arrow-right-s-line"></i></div>
+        </div>
+      </div>
+      <!-- Recent manual records -->
+      <div style="margin-top:10px;">
+        <div class="sec-lbl" style="padding:0 0 4px;"><i class="ri-history-line"></i> 最近手動紀錄</div>
+        <div class="man-rec" onclick="openManBS('葡萄子','NOW','1')">
+          <div class="man-rec-info">
+            <div class="man-rec-name">葡萄子</div>
+            <div class="man-rec-meta">1 顆・NOW</div>
+          </div>
+          <div class="add-pill"><i class="ri-add-line"></i></div>
+        </div>
+        <div class="man-rec" onclick="openManBS('黑瑪卡','大研生醫','2')">
+          <div class="man-rec-info">
+            <div class="man-rec-name">黑瑪卡</div>
+            <div class="man-rec-meta">2 顆・大研生醫</div>
+          </div>
+          <div class="add-pill"><i class="ri-add-line"></i></div>
+        </div>
+        <div class="man-rec" onclick="openManBS('薑黃粉','自製','1')">
+          <div class="man-rec-info">
+            <div class="man-rec-name">薑黃粉</div>
+            <div class="man-rec-meta">1 匙・自製</div>
+          </div>
+          <div class="add-pill"><i class="ri-add-line"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     S2 · 搜尋（品牌 / 產品名稱）
+══════════════════════════ -->
+<div class="screen" id="s-brand-search" style="position:relative;">
+  <div class="sb"><span class="sb-time light">9:41</span></div>
+  <div class="nav" style="padding-bottom:0;">
+    <div class="ic" onclick="back()"><i class="ri-arrow-left-s-line"></i></div>
+    <div class="ttabs" id="ttabs">
+      <div class="ttab on" id="bt1" onclick="bsTab('brand')">依品牌名稱</div>
+      <div class="ttab"    id="bt2" onclick="bsTab('prod')">依產品名稱</div>
+    </div>
+    <div class="ic" style="width:36px;"></div>
+  </div>
+  <div class="divl"></div>
+
+  <!-- 依品牌 search -->
+  <div id="brand-srch-bar" class="srch focused" style="margin-top:12px;">
+    <i class="ri-search-line"></i>
+    <input id="b-input" type="text" placeholder="請輸入品牌名稱" oninput="onBrandSearch(this.value)" autocomplete="off">
+    <i class="ri-close-line xclear" id="b-clear" style="display:none;" onclick="clearBrand()"></i>
+  </div>
+  <div id="brand-cats-bar" style="display:flex;align-items:center;justify-content:space-between;padding-right:20px;">
+    <div class="cats" id="brandcats" style="flex:1;">
+      <div class="ctab on" onclick="setBrandCat(this)">全部</div>
+      <div class="ctab" onclick="setBrandCat(this)">維他命</div>
+      <div class="ctab" onclick="setBrandCat(this)">礦物質</div>
+      <div class="ctab" onclick="setBrandCat(this)">魚油</div>
+      <div class="ctab" onclick="setBrandCat(this)">益生菌</div>
+      <div class="ctab" onclick="setBrandCat(this)">葉黃素</div>
+      <div class="ctab" onclick="setBrandCat(this)">膠原蛋白</div>
+      <div class="ctab" onclick="setBrandCat(this)">輔酶Q10</div>
+      <div class="ctab" onclick="setBrandCat(this)">蛋白質</div>
+    </div>
+    <span class="db-cnt" id="brand-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">18 項</span>
+  </div>
+
+  <!-- Brand A-Z list -->
+  <div id="brand-list" class="scroll" style="position:relative;">
+    <div class="alpha-grp"><span>A</span></div>
+    <div class="brand-row" data-n="Aboca" data-cat="維他命">Aboca <i class="ri-arrow-right-s-line"></i></div>
+    <div class="brand-row" data-n="Alcon" data-cat="維他命">Alcon <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>B</span></div>
+    <div class="brand-row" data-n="Bayer 拜耳" data-cat="礦物質">Bayer 拜耳 <i class="ri-arrow-right-s-line"></i></div>
+    <div class="brand-row hl" data-n="Blackmores 澳佳寶" data-cat="魚油" onclick="go('s-brand-products')">Blackmores 澳佳寶 <i class="ri-arrow-right-s-line"></i></div>
+    <div class="brand-row" data-n="Bio-Kult" data-cat="益生菌">Bio-Kult <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>C</span></div>
+    <div class="brand-row" data-n="Cofit" data-cat="維他命">Cofit <i class="ri-arrow-right-s-line"></i></div>
+    <div class="brand-row" data-n="Centrum 善存" data-cat="維他命">Centrum 善存 <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>D</span></div>
+    <div class="brand-row" data-n="DHC" data-cat="維他命">DHC <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>E</span></div>
+    <div class="brand-row" data-n="Eisai 衛采" data-cat="維他命">Eisai 衛采 <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>F</span></div>
+    <div class="brand-row" data-n="Fancl" data-cat="維他命">Fancl <i class="ri-arrow-right-s-line"></i></div>
+    <div class="brand-row" data-n="Forever Living" data-cat="益生菌">Forever Living <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>G</span></div>
+    <div class="brand-row" data-n="GNC" data-cat="魚油">GNC <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>H</span></div>
+    <div class="brand-row" data-n="Herbalife" data-cat="益生菌">Herbalife <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>N</span></div>
+    <div class="brand-row" data-n="NOW Foods" data-cat="魚油">NOW Foods <i class="ri-arrow-right-s-line"></i></div>
+    <div class="brand-row" data-n="Nature Made" data-cat="礦物質">Nature Made <i class="ri-arrow-right-s-line"></i></div>
+    <div class="alpha-grp"><span>S</span></div>
+    <div class="brand-row" data-n="Solgar" data-cat="礦物質">Solgar <i class="ri-arrow-right-s-line"></i></div>
+    <div class="brand-row" data-n="Swisse" data-cat="魚油">Swisse <i class="ri-arrow-right-s-line"></i></div>
+  </div>
+
+  <!-- Search results -->
+  <div id="brand-results" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+    <div class="scroll" id="b-res-list"></div>
+  </div>
+
+  <!-- Empty -->
+  <div id="brand-empty" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+    <div class="res-hdr">搜尋結果：<em>0</em> 筆</div>
+    <div class="empty-state">
+      <i class="ri-search-eye-line"></i>
+      <div class="empty-ttl" id="b-empty-txt">找不到相關品牌</div>
+      <div class="empty-sub">請確認品牌名稱後再試</div>
+    </div>
+  </div>
+
+  <!-- 依產品名稱 panel -->
+  <div id="prod-panel" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+    <div class="srch focused" style="margin-top:12px;">
+      <i class="ri-search-line"></i>
+      <input id="pp-input" type="text" placeholder="請輸入產品名稱" autocomplete="off" oninput="onProdSearch(this.value)">
+      <i class="ri-close-line xclear" id="pp-clear" style="display:none;" onclick="clearProdSearch()"></i>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-right:20px;">
+      <div class="cats" id="prodcats" style="flex:1;">
+        <div class="ctab on" onclick="setCat(this,'prodcats')">全部</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">維他命</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">礦物質</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">魚油</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">益生菌</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">葉黃素</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">膠原蛋白</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">輔酶Q10</div>
+        <div class="ctab" onclick="setCat(this,'prodcats')">蛋白質</div>
+      </div>
+      <span class="db-cnt" id="prod-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">8 項</span>
+    </div>
+    <div id="pp-empty" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+      <div class="empty-state">
+        <i class="ri-search-eye-line"></i>
+        <div class="empty-ttl" id="pp-empty-txt">找不到相關產品</div>
+        <div class="empty-sub">請確認名稱後再試</div>
+      </div>
+    </div>
+    <div class="scroll" id="pp-scroll">
+      <div class="prow" data-cat="維他命" data-ppname="維他命A Vitamin A" onclick="openBS('維他命A','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','DHC · 維他命A 2500IU')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vita/100/100'">
+        <div class="p-info"><div class="p-name">維他命A</div><div class="p-sub">DHC · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="維他命" data-ppname="維他命B群 Vitamin B complex" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Cofit · 維他命B群 100錠')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitb2/100/100'">
+        <div class="p-info"><div class="p-name">維他命B群</div><div class="p-sub">Cofit · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="維他命" data-ppname="維他命D3 Vitamin D" onclick="openBS('維他命D3','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','Cofit · 維他命D3 1000IU')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitd/100/100'">
+        <div class="p-info"><div class="p-name">維他命D3</div><div class="p-sub">Cofit · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="維他命" data-ppname="維他命C Vitamin C 1000" onclick="openBS('維他命C 1000','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','NOW · 維他命C 1000mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitc2/100/100'">
+        <div class="p-info"><div class="p-name">維他命C 1000</div><div class="p-sub">NOW · 2顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="礦物質" data-ppname="鈣片 Calcium 碳酸鈣 礦物質" onclick="openBS('鈣片','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','萊萃美 · 鈣片 600mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/cal2/100/100'">
+        <div class="p-info"><div class="p-name">鈣片</div><div class="p-sub">萊萃美 · 3顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="魚油" data-ppname="Omega-3 魚油 Fish Oil" onclick="openBS('Omega-3 魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','健安喜 · Omega-3 1200mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/omega/100/100'">
+        <div class="p-info"><div class="p-name">Omega-3 魚油</div><div class="p-sub">健安喜 · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="魚油" data-ppname="頂級魚油 深海魚油 premium fish oil" onclick="openBS('頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fishoil2/100/100'">
+        <div class="p-info"><div class="p-name">頂級魚油</div><div class="p-sub">Cofit · 2顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+      <div class="prow" data-cat="維他命" data-ppname="綜合維他命 multivitamin 善存" onclick="openBS('綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 綜合維他命')">
+        <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/multi2/100/100'">
+        <div class="p-info"><div class="p-name">綜合維他命</div><div class="p-sub">善存 · 1顆</div></div>
+        <div class="add-pill"><i class="ri-add-line"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alpha-side" id="alpha-side">
+    <span>A</span><span>B</span><span>C</span><span>D</span>
+    <span>E</span><span>F</span><span>G</span><span>H</span>
+    <span>N</span><span>S</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     S3 · Brand Products
+══════════════════════════ -->
+<div class="screen" id="s-brand-products">
+  <div class="sb"><span class="sb-time light">9:41</span></div>
+  <div class="nav">
+    <div class="ic" onclick="back()"><i class="ri-arrow-left-s-line"></i></div>
+    <div class="nav-title sm">Blackmores 澳佳寶</div>
+    <div class="ic"><i class="ri-equalizer-line"></i></div>
+  </div>
+  <div class="srch" id="bp-srch-bar">
+    <i class="ri-search-line"></i>
+    <input id="bp-search" type="text" placeholder="搜尋營養品名稱" autocomplete="off"
+      oninput="onBpSearch(this.value)"
+      onfocus="this.closest('.srch').classList.add('focused')"
+      onblur="this.closest('.srch').classList.remove('focused')">
+    <i class="ri-close-line xclear" id="bp-clear" style="display:none;" onclick="clearBpSearch()"></i>
+  </div>
+  <!-- normal: divider + cats -->
+  <div id="bp-normal-bar">
+    <div class="divl"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;flex-shrink:0;">
+      <div class="cats" id="bpcats" style="margin:0;padding:0;flex:1;">
+        <div class="ctab on" onclick="setCat(this,'bpcats')">全部</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">維他命</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">礦物質</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">魚油</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">益生菌</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">葉黃素</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">膠原蛋白</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">輔酶Q10</div>
+        <div class="ctab" onclick="setCat(this,'bpcats')">蛋白質</div>
+      </div>
+      <span class="db-cnt" id="bp-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">7 項</span>
+    </div>
+  </div>
+  <!-- search result header -->
+  <div id="bp-res-hdr" style="display:none;padding:10px 20px 4px;font-size:13px;font-weight:700;color:#374151;flex-shrink:0;"></div>
+  <!-- empty state -->
+  <div id="bp-empty" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+    <div class="empty-state">
+      <i class="ri-search-eye-line"></i>
+      <div class="empty-ttl" id="bp-empty-txt">找不到相關產品</div>
+      <div class="empty-sub">請確認名稱後再試</div>
+    </div>
+  </div>
+  <div class="scroll" id="bp-scroll">
+    <div class="bprow" data-cat="維他命" data-name="維他命C 1000 Vitamin C" onclick="openBS('維他命C 1000','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Blackmores · 維他命C 1000mg')">
+      <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitc/100/100'">
+      <div class="bp-info"><div class="bp-name">維他命C 1000</div><div class="bp-sub">維他命 · 每次 1 顆 · 每日 1 次</div></div>
+      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+    </div>
+    <div class="bprow" data-cat="魚油" data-name="深海魚油 Fish Oil Omega" onclick="openBS('深海魚油 Fish Oil','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Blackmores · 深海魚油 1000mg')">
+      <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fish/100/100'">
+      <div class="bp-info"><div class="bp-name">深海魚油 Fish Oil</div><div class="bp-sub">魚油 · 每次 2 顆 · 每日 1 次</div></div>
+      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+    </div>
+    <div class="bprow" data-cat="礦物質" data-name="鈣片 Calcium 碳酸鈣" onclick="openBS('鈣片 Calcium','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','Blackmores · 鈣片 600mg')">
+      <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/cal/100/100'">
+      <div class="bp-info"><div class="bp-name">鈣片 Calcium</div><div class="bp-sub">礦物質 · 每次 1 顆 · 每日 2 次</div></div>
+      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+    </div>
+    <div class="bprow" data-cat="葉黃素" data-name="葉黃素 Lutein 護眼" onclick="openBS('葉黃素 Lutein','https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop','Blackmores · 葉黃素 10mg')">
+      <img class="p-img" src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/lut/100/100'">
+      <div class="bp-info"><div class="bp-name">葉黃素 Lutein</div><div class="bp-sub">維他命 · 每次 1 顆 · 每日 1 次</div></div>
+      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+    </div>
+    <div class="bprow" data-cat="益生菌" data-name="益生菌 Probiotics 乳酸菌" onclick="openBS('益生菌 Probiotics','https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop','Blackmores · 益生菌 30億')">
+      <img class="p-img" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/prob/100/100'">
+      <div class="bp-info"><div class="bp-name">益生菌 Probiotics</div><div class="bp-sub">益生菌 · 每次 1 包 · 每日 1 次</div></div>
+      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+    </div>
+    <div class="bprow" data-cat="輔酶Q10" data-name="CoQ10 輔酶 輔酵素" onclick="openBS('CoQ10 輔酶','https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop','Blackmores · CoQ10 150mg')">
+      <img class="p-img" src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/coq/100/100'">
+      <div class="bp-info"><div class="bp-name">CoQ10 輔酶</div><div class="bp-sub">維他命 · 每次 1 顆 · 每日 1 次</div></div>
+      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+    </div>
+    <div class="bprow" data-cat="礦物質" data-name="鎂片 Magnesium 氧化鎂" onclick="openBS('鎂片 Magnesium','https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop','Blackmores · 鎂片 250mg')">
+      <img class="p-img" src="https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/mag/100/100'">
+      <div class="bp-info"><div class="bp-name">鎂片 Magnesium</div><div class="bp-sub">礦物質 · 每次 1 顆 · 每日 2 次</div></div>
+      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     S4 · 拍照自動辨識
+══════════════════════════ -->
+<div class="screen cam-bg" id="s-camera">
+  <div class="cam-sb"><span class="cam-time">9:41</span></div>
+  <div class="cam-nav">
+    <div class="cam-btn" onclick="back()"><i class="ri-close-line"></i></div>
+    <span class="cam-ttl">掃描保健品營養成份</span>
+    <div class="cam-btn"><i class="ri-flashlight-line"></i></div>
+  </div>
+  <div class="cam-vp">
+    <div class="scan-line"></div>
+    <div class="scan-hint">將營養成分標籤對準框內</div>
+  </div>
+  <div class="cam-bar">
+    <div class="cam-gal" onclick="document.getElementById('cam-file-input').click()"><i class="ri-image-line"></i></div>
+    <input id="cam-file-input" type="file" accept="image/*" style="display:none;" onchange="afterScan()">
+    <div class="cam-cap" onclick="afterScan()"></div>
+    <div class="cam-flip"><i class="ri-camera-switch-line"></i></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     SUCCESS POPUP
+══════════════════════════ -->
+<div class="overlay" id="sucOverlay" style="z-index:102;" onclick="closeSucPop()"></div>
+<div class="suc-pop" id="sucPop">
+  <div class="suc-ring"><i class="ri-check-line" id="suc-check-ic"></i></div>
+  <div class="suc-ttl">紀錄成功！</div>
+  <div class="suc-meta" id="suc-meta">已記錄今日服用</div>
+  <div class="suc-card">
+    <div class="suc-row"><span class="suc-k">保健品</span><span class="suc-v" id="ss-name">—</span></div>
+    <div class="suc-div"></div>
+    <div class="suc-row"><span class="suc-k">服用量</span><span class="suc-v" id="ss-qty">—</span></div>
+    <div class="suc-div"></div>
+    <div class="suc-row"><span class="suc-k">服用時間</span><span class="suc-v">09:30 AM</span></div>
+    <div class="suc-div"></div>
+    <div class="suc-row"><span class="suc-k">日期</span><span class="suc-v" id="ss-date">—</span></div>
+  </div>
+  <div class="suc-btns">
+    <button class="suc-btn-home" onclick="sucGoHome()">返回</button>
+    <button class="suc-btn-cont" onclick="sucContinue()">繼續紀錄</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     BOTTOM SHEET · 紀錄確認
+══════════════════════════ -->
+<div class="overlay" id="bsOverlay" onclick="closeBS()"></div>
+<div class="bs" id="bsPanel">
+  <div class="bs-handle"></div>
+  <!-- Product header -->
+  <div class="rc-hdr">
+    <img class="rc-prod-img" id="c-img" src="" onerror="this.src='https://picsum.photos/seed/supp/100/100'">
+    <div class="rc-prod-info">
+      <div class="rc-prod-name" id="c-name">葡萄籽</div>
+      <div class="rc-prod-brand" id="c-brand">Bayer 拜耳</div>
+    </div>
+    <div class="rc-close" onclick="closeBS()"><i class="ri-close-line"></i></div>
+  </div>
+  <!-- Scrollable middle -->
+  <div class="rc-inner">
+    <!-- Dosage card -->
+    <div class="rc-card">
+      <div class="rc-dose-row">
+        <span class="rc-dose-lbl">本次攝取量</span>
+        <div class="rc-stepper">
+          <div class="rc-minus" onclick="changeQty(-1)"><i class="ri-subtract-line"></i></div>
+          <span class="rc-num" id="c-qty-num">1</span>
+          <span class="rc-unit">顆</span>
+          <div class="rc-plus" onclick="changeQty(1)"><i class="ri-add-line"></i></div>
+        </div>
+      </div>
+      <div class="rc-hdivider"></div>
+      <div class="rc-info-row">
+        <i class="ri-information-line"></i>
+        <span>系統將根據錄入量自動計算對應的營養攝取數據</span>
+      </div>
+    </div>
+    <!-- Nutrition card -->
+    <div class="rc-card">
+      <div class="rc-nut-hdr" onclick="toggleNutList()">
+        <span class="rc-nut-hdr-lbl">營養成分</span>
+        <div class="rc-nut-cnt"><span id="rc-nut-cnt"></span><i class="ri-arrow-down-s-line flip" id="rc-nut-arr"></i></div>
+      </div>
+      <div id="rc-nut-list"></div>
+    </div>
+  </div>
+  <!-- Bottom buttons -->
+  <div class="rc-btns">
+    <button class="rc-btn-cancel" onclick="closeBS()">取消</button>
+    <button class="rc-btn-confirm" onclick="submitRecord()">確認紀錄</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     BOTTOM SHEET · 手動紀錄
+══════════════════════════ -->
+<div class="overlay" id="manOverlay" onclick="closeManBS()"></div>
+<div class="bs" id="manPanel">
+  <div class="bs-handle"></div>
+  <div class="bs-nav">
+    <div class="bs-ttl">手動紀錄服用品項</div>
+    <div class="bs-x" onclick="closeManBS()"><i class="ri-close-line"></i></div>
+  </div>
+  <div class="bs-scroll" style="gap:20px;">
+    <!-- 保健品名稱 -->
+    <div class="mf-group">
+      <div class="mf-lbl">保健品名稱 <em>*</em></div>
+      <input id="mf-name" class="mf-inp" type="text" placeholder="輸入保健品名稱">
+    </div>
+    <!-- 品牌 -->
+    <div class="mf-group">
+      <div class="mf-lbl">品牌（選填）</div>
+      <input id="mf-brand" class="mf-inp" type="text" placeholder="輸入品牌名稱">
+    </div>
+    <!-- 劑量 -->
+    <div class="mf-group">
+      <div class="mf-lbl">本次服用劑量</div>
+      <div class="mf-dose">
+        <div class="mf-stepper">
+          <div class="mf-minus" onclick="manQty(-1)"><i class="ri-subtract-line"></i></div>
+          <div class="mf-qty" id="mf-qty-val">2</div>
+          <div class="mf-plus" onclick="manQty(1)"><i class="ri-add-line"></i></div>
+        </div>
+        <div class="mf-vdiv"></div>
+        <div class="mf-unit">顆 <i class="ri-arrow-down-s-line"></i></div>
+      </div>
+    </div>
+    <!-- 營養成分 -->
+    <div class="mf-group">
+      <div class="mf-sec-hdr">
+        <div class="mf-lbl" style="margin:0;">包含營養成分 <span style="color:#9CA3AF;font-weight:400;">(OCR 自動提取)</span></div>
+        <div class="mf-add" onclick="addNutRow()">+ 新增</div>
+      </div>
+      <div id="nut-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+    <!-- CTA -->
+    <button class="cta" onclick="submitManRecord()">直接紀錄</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     CALENDAR PICKER
+══════════════════════════ -->
+<div class="cal-overlay" id="calOverlay" onclick="closeCal()"></div>
+<div class="cal-panel" id="calPanel">
+  <div class="cal-handle"></div>
+  <div class="cal-hdr">
+    <div class="cal-arr" id="cal-prev" onclick="calNav(-1)"><i class="ri-arrow-left-s-line"></i></div>
+    <div class="cal-month" id="cal-month-lbl"></div>
+    <div class="cal-arr" id="cal-next" onclick="calNav(1)"><i class="ri-arrow-right-s-line"></i></div>
+  </div>
+  <div class="cal-weekdays">
+    <div class="cal-wd">日</div><div class="cal-wd">一</div><div class="cal-wd">二</div>
+    <div class="cal-wd">三</div><div class="cal-wd">四</div><div class="cal-wd">五</div><div class="cal-wd">六</div>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+</div>
+
+</div><!-- /.phone -->
+<script>
+/* ── Navigation ── */
+const stk=['s-home'];
+const cur=()=>document.getElementById(stk[stk.length-1]);
+
+function go(id){
+  if(id===stk[stk.length-1])return;
+  const p=cur(),n=document.getElementById(id);
+  n.style.display='flex'; n.classList.add('enter'); p.classList.add('exit');
+  const done=()=>{p.style.display='none';p.classList.remove('exit');n.classList.remove('enter');};
+  n.addEventListener('animationend',done,{once:true});
+  stk.push(id);
+}
+function back(){
+  if(stk.length<=1)return;
+  const p=cur(); stk.pop();
+  const n=document.getElementById(stk[stk.length-1]);
+  n.style.display='flex'; n.classList.add('enter-back'); p.classList.add('exit-back');
+  const done=()=>{p.style.display='none';p.classList.remove('exit-back');n.classList.remove('enter-back');};
+  p.addEventListener('animationend',done,{once:true});
+}
+function goHome(){
+  while(stk.length>1)stk.pop();
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('s-home').style.display='flex';
+  homeTab('lib');
+}
+
+/* ── Home Tab ── */
+function homeTab(t){
+  document.getElementById('h-lib-t').classList.toggle('on',t==='lib');
+  document.getElementById('h-man-t').classList.toggle('on',t==='man');
+  const lib=document.getElementById('h-lib'), man=document.getElementById('h-man');
+  lib.style.display=t==='lib'?'flex':'none';
+  man.style.display=t==='man'?'flex':'none';
+  document.getElementById('home-srch').style.display=t==='lib'?'flex':'none';
+  const shown=t==='lib'?lib:man;
+  shown.classList.remove('tab-in');
+  void shown.offsetWidth;
+  shown.classList.add('tab-in');
+}
+
+/* ── Date Navigation ── */
+let dateOffset=0;
+const wdays=['日','一','二','三','四','五','六'];
+function changeDate(d){
+  dateOffset+=d;
+  const now=new Date(), t=new Date(now);
+  t.setDate(now.getDate()+dateOffset);
+  let txt;
+  if(dateOffset===0) txt='今天';
+  else txt=`${t.getMonth()+1}月${t.getDate()}日 週${wdays[t.getDay()]}`;
+  const el=document.getElementById('date-txt');
+  el.classList.remove('date-pop');
+  void el.offsetWidth;
+  el.classList.add('date-pop');
+  el.textContent=txt;
+}
+
+/* ── Brand Search Tab ── */
+function bsTab(mode){
+  const isBrand=mode==='brand';
+  document.getElementById('bt1').classList.toggle('on',isBrand);
+  document.getElementById('bt2').classList.toggle('on',!isBrand);
+  document.getElementById('brand-srch-bar').style.display=isBrand?'flex':'none';
+  document.getElementById('brand-cats-bar').style.display=isBrand?'block':'none';
+  document.getElementById('brand-list').style.display=isBrand?'block':'none';
+  document.getElementById('brand-results').style.display='none';
+  document.getElementById('brand-empty').style.display='none';
+  const pp=document.getElementById('prod-panel');
+  pp.style.display=isBrand?'none':'flex';
+  document.getElementById('alpha-side').style.display=isBrand?'flex':'none';
+  if(isBrand){clearBrand();}
+  else{
+    pp.classList.remove('tab-in');void pp.offsetWidth;pp.classList.add('tab-in');
+    clearProdSearch();
+  }
+}
+
+/* ── Brand Category Chips ── */
+function setBrandCat(el){
+  document.querySelectorAll('#brandcats .ctab').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  const cat=el.textContent.trim();
+  let visible=0;
+  document.querySelectorAll('#brand-list .brand-row').forEach(row=>{
+    const match=cat==='全部'||row.dataset.cat===cat;
+    row.style.display=match?'flex':'none';
+    if(match) visible++;
+  });
+  // hide alpha group headers with no visible rows
+  document.querySelectorAll('#brand-list .alpha-grp').forEach(grp=>{
+    let next=grp.nextElementSibling;
+    let hasVisible=false;
+    while(next&&!next.classList.contains('alpha-grp')){
+      if(next.style.display!=='none') hasVisible=true;
+      next=next.nextElementSibling;
+    }
+    grp.style.display=hasVisible?'block':'none';
+  });
+  const cnt=document.getElementById('brand-cnt');
+  if(cnt) cnt.textContent=visible+' 項';
+}
+
+/* ── Brand Search ── */
+const allBrands=['Aboca','Alcon','Bayer 拜耳','Blackmores 澳佳寶','Bio-Kult','Cofit','Centrum 善存','DHC','Eisai 衛采','Fancl','Forever Living','GNC','Herbalife','NOW Foods','Nature Made','Solgar','Swisse'];
+
+function onBrandSearch(v){
+  if(!v.trim()){clearBrand();return;}
+  document.getElementById('b-clear').style.display='inline';
+  const matches=allBrands.filter(b=>b.toLowerCase().includes(v.toLowerCase()));
+  document.getElementById('brand-list').style.display='none';
+  document.getElementById('alpha-side').style.display='none';
+  document.getElementById('brand-cats-bar').style.display='none';
+  if(!matches.length){
+    document.getElementById('brand-results').style.display='none';
+    document.getElementById('brand-empty').style.display='flex';
+    document.getElementById('b-empty-txt').textContent=`找不到「${v}」的相關品牌`;
+  } else {
+    document.getElementById('brand-empty').style.display='none';
+    document.getElementById('b-res-list').innerHTML=matches.map(b=>{
+      const hl=b.replace(new RegExp(v,'gi'),m=>`<span class="hl-txt">${m}</span>`);
+      const click=b==='Blackmores 澳佳寶'?`onclick="go('s-brand-products')"`:'';
+      return `<div class="brand-row ${b==='Blackmores 澳佳寶'?'hl':''}" ${click}><span>${hl}</span><i class="ri-arrow-right-s-line"></i></div>`;
+    }).join('');
+    document.getElementById('brand-results').style.display='flex';
+  }
+}
+function clearBrand(){
+  document.getElementById('b-input').value='';
+  document.getElementById('b-clear').style.display='none';
+  document.getElementById('brand-list').style.display='block';
+  document.getElementById('brand-results').style.display='none';
+  document.getElementById('brand-empty').style.display='none';
+  document.getElementById('alpha-side').style.display='flex';
+  document.getElementById('brand-cats-bar').style.display='block';
+  // reset chips to 全部
+  document.querySelectorAll('#brandcats .ctab').forEach((c,i)=>c.classList.toggle('on',i===0));
+  setBrandCat(document.querySelector('#brandcats .ctab'));
+}
+
+/* ── Brand Product Search ── */
+function onBpSearch(v){
+  const rows=document.querySelectorAll('#bp-scroll .bprow');
+  const normalBar=document.getElementById('bp-normal-bar');
+  const resHdr=document.getElementById('bp-res-hdr');
+  const emptyEl=document.getElementById('bp-empty');
+  const clearBtn=document.getElementById('bp-clear');
+  clearBtn.style.display=v?'inline':'none';
+  if(!v.trim()){
+    clearBpSearch(); return;
+  }
+  normalBar.style.display='none';
+  const q=v.toLowerCase();
+  let count=0;
+  rows.forEach(row=>{
+    const name=row.dataset.name||'';
+    const match=name.toLowerCase().includes(q);
+    row.style.display=match?'flex':'none';
+    if(match){
+      count++;
+      // highlight matching text in bp-name
+      const nameEl=row.querySelector('.bp-name');
+      const orig=nameEl.textContent;
+      nameEl.innerHTML=orig.replace(new RegExp(v,'gi'),m=>`<span class="hl-txt">${m}</span>`);
+    } else {
+      // restore plain text
+      const nameEl=row.querySelector('.bp-name');
+      nameEl.innerHTML=nameEl.textContent;
+    }
+  });
+  if(count===0){
+    resHdr.style.display='none';
+    emptyEl.style.display='flex';
+    document.getElementById('bp-empty-txt').textContent=`找不到「${v}」的相關產品`;
+  } else {
+    emptyEl.style.display='none';
+    resHdr.style.display='block';
+    resHdr.innerHTML=`搜尋結果：<em style="color:#004F51">${count}</em> 項`;
+  }
+}
+function clearBpSearch(){
+  document.getElementById('bp-search').value='';
+  document.getElementById('bp-clear').style.display='none';
+  document.getElementById('bp-normal-bar').style.display='block';
+  document.getElementById('bp-res-hdr').style.display='none';
+  document.getElementById('bp-empty').style.display='none';
+  // restore all rows and plain text
+  document.querySelectorAll('#bp-scroll .bprow').forEach(row=>{
+    row.style.display='flex';
+    const nameEl=row.querySelector('.bp-name');
+    nameEl.innerHTML=nameEl.textContent;
+  });
+}
+
+/* ── Category Chips ── */
+const catItemsMap={hcats:'#h-lib .prow', bpcats:'#s-brand-products .bprow', prodcats:'#pp-scroll .prow'};
+function setCat(el,gid){
+  document.querySelectorAll(`#${gid} .ctab`).forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  const cat=el.textContent.trim();
+  const sel=catItemsMap[gid];
+  if(!sel)return;
+  let visible=0;
+  document.querySelectorAll(sel).forEach(row=>{
+    const match=cat==='全部'||row.dataset.cat===cat;
+    row.style.display=match?'flex':'none';
+    if(match){visible++;row.classList.remove('tab-in');void row.offsetWidth;row.classList.add('tab-in');}
+  });
+  if(gid==='bpcats'){
+    const cnt=document.getElementById('bp-cnt');
+    if(cnt) cnt.textContent=visible+' 項';
+  }
+  if(gid==='hcats'){
+    const cnt=document.getElementById('h-lib-cnt');
+    if(cnt) cnt.textContent=visible+' 項';
+  }
+  if(gid==='prodcats'){
+    const cnt=document.getElementById('prod-cnt');
+    if(cnt) cnt.textContent=visible+' 項';
+  }
+}
+
+/* ── Bottom Sheet · 紀錄確認 ── */
+let qty=1, curImg='', curName='';
+let nutOpen=true;
+
+// Mock nutrients per product keyword
+const nutDB={
+  '維他命C':[{n:'維生素 C',v:'1000 mg'},{n:'生物類黃酮',v:'25 mg'}],
+  '魚油':[{n:'EPA',v:'360 mg'},{n:'DHA',v:'240 mg'},{n:'Omega-3',v:'600 mg'}],
+  '益生菌':[{n:'乳酸菌',v:'30 億 CFU'},{n:'雙歧桿菌',v:'10 億 CFU'}],
+  '鈣':[{n:'鈣',v:'600 mg'},{n:'維生素 D3',v:'400 IU'}],
+  '鎂':[{n:'鎂',v:'250 mg'},{n:'維生素 B6',v:'2 mg'}],
+  '葉黃素':[{n:'葉黃素',v:'10 mg'},{n:'玉米黃素',v:'2 mg'}],
+  '葡萄':[{n:'原花青素 OPC',v:'200 mg'},{n:'多酚類化合物',v:'150 mg'},{n:'維生素 E',v:'30 IU'},{n:'白藜蘆醇',v:'25 mg'},{n:'維生素 C',v:'60 mg'}],
+};
+const defaultNuts=[{n:'維生素 B1',v:'1.5 mg'},{n:'維生素 B2',v:'1.7 mg'},{n:'維生素 B6',v:'2 mg'},{n:'葉酸',v:'400 mcg'}];
+
+function getNuts(name){
+  for(const key of Object.keys(nutDB)){
+    if(name.includes(key)) return nutDB[key];
+  }
+  return defaultNuts;
+}
+
+function openBS(name,img,brand){
+  curName=name; curImg=img; qty=1;
+  document.getElementById('c-name').textContent=name;
+  document.getElementById('c-brand').textContent=brand;
+  document.getElementById('c-img').src=img;
+  document.getElementById('c-qty-num').textContent=1;
+  // render nutrients
+  nutOpen=true;
+  const nuts=getNuts(name);
+  document.getElementById('rc-nut-cnt').textContent=nuts.length+' 項';
+  document.getElementById('rc-nut-arr').classList.add('flip');
+  const list=document.getElementById('rc-nut-list');
+  list.style.display='block';
+  list.innerHTML=nuts.map(n=>`<div class="rc-nut-row"><span class="rc-nut-name">${n.n}</span><span class="rc-nut-val">${n.v}</span></div>`).join('');
+  document.getElementById('rc-inner-scroll')&&(document.getElementById('rc-inner-scroll').scrollTop=0);
+  document.getElementById('bsOverlay').classList.add('show');
+  document.getElementById('bsPanel').classList.add('open');
+}
+function closeBS(){
+  document.getElementById('bsOverlay').classList.remove('show');
+  document.getElementById('bsPanel').classList.remove('open');
+}
+function changeQty(d){
+  qty=Math.max(1,qty+d);
+  document.getElementById('c-qty-num').textContent=qty;
+}
+function toggleNutList(){
+  nutOpen=!nutOpen;
+  document.getElementById('rc-nut-list').style.display=nutOpen?'block':'none';
+  document.getElementById('rc-nut-arr').classList.toggle('flip',nutOpen);
+}
+/* ── Manual Input Bottom Sheet ── */
+let manQtyVal=2;
+
+function nutRowHTML(name='',val=''){
+  const row=document.createElement('div');
+  row.className='mf-nut-row';
+  row.innerHTML=`
+    <input class="mf-nut-inp mf-nut-inp-name" placeholder="成份名稱" value="${name}">
+    <input class="mf-nut-inp mf-nut-inp-val" type="number" placeholder="0" value="${val}">
+    <span class="mf-nut-unit">mg</span>
+    <span class="mf-nut-del" onclick="this.closest('.mf-nut-row').remove()"><i class="ri-delete-bin-line"></i></span>`;
+  return row;
+}
+function addNutRow(name='',val=''){
+  document.getElementById('nut-list').appendChild(nutRowHTML(name,val));
+}
+function resetNutList(){
+  const list=document.getElementById('nut-list');
+  list.innerHTML='';
+  addNutRow('','');
+  addNutRow('','');
+}
+
+/* ── After Camera Scan ── */
+// Mock OCR results — nutrients auto-filled, name/brand/dose left blank for user
+const mockScanNuts=[
+  {name:'維生素 C', val:'1000'},
+  {name:'維生素 B12', val:'6'},
+  {name:'葉酸', val:'400'},
+  {name:'鋅', val:'10'},
+];
+function afterScan(){
+  // Show scanning flash feedback
+  const line=document.querySelector('.scan-line');
+  line.style.background='linear-gradient(90deg,transparent,#fff 30%,#00E5C0 50%,#fff 70%,transparent)';
+  line.style.height='3px';
+  const hint=document.querySelector('.scan-hint');
+  hint.textContent='辨識中…';
+  setTimeout(()=>{
+    back(); // go back from camera screen
+    // reset scan line
+    line.style.background='';line.style.height='';hint.textContent='將營養成分標籤對準框內';
+    // open manual input sheet with OCR-detected nutrients
+    manQtyVal=1;
+    document.getElementById('mf-name').value='';
+    document.getElementById('mf-brand').value='';
+    document.getElementById('mf-qty-val').textContent=1;
+    // fill nutrients from scan
+    const list=document.getElementById('nut-list');
+    list.innerHTML='';
+    mockScanNuts.forEach(n=>addNutRow(n.name,n.val));
+    document.getElementById('manOverlay').classList.add('show');
+    document.getElementById('manPanel').classList.add('open');
+  },900);
+}
+
+function openManBS(name='',brand='',qty='2'){
+  manQtyVal=parseInt(qty)||2;
+  document.getElementById('mf-name').value=name;
+  document.getElementById('mf-brand').value=brand;
+  document.getElementById('mf-qty-val').textContent=manQtyVal;
+  resetNutList();
+  document.getElementById('manOverlay').classList.add('show');
+  document.getElementById('manPanel').classList.add('open');
+}
+function closeManBS(){
+  document.getElementById('manOverlay').classList.remove('show');
+  document.getElementById('manPanel').classList.remove('open');
+}
+function manQty(d){
+  manQtyVal=Math.max(1,manQtyVal+d);
+  document.getElementById('mf-qty-val').textContent=manQtyVal;
+}
+function submitManRecord(){
+  const name=document.getElementById('mf-name').value||'手動品項';
+  closeManBS();
+  openSucPop(name,manQtyVal);
+}
+
+/* ── Calendar Picker ── */
+let calViewYear, calViewMonth, calSelDate;
+const today=new Date();
+
+function openCal(){
+  // init view to currently selected date
+  const sel=new Date(today);
+  sel.setDate(today.getDate()+dateOffset);
+  calSelDate=new Date(sel);
+  calViewYear=sel.getFullYear();
+  calViewMonth=sel.getMonth();
+  renderCal();
+  document.getElementById('calOverlay').classList.add('show');
+  document.getElementById('calPanel').classList.add('open');
+}
+function closeCal(){
+  document.getElementById('calOverlay').classList.remove('show');
+  document.getElementById('calPanel').classList.remove('open');
+}
+function calNav(d){
+  calViewMonth+=d;
+  if(calViewMonth>11){calViewMonth=0;calViewYear++;}
+  if(calViewMonth<0){calViewMonth=11;calViewYear--;}
+  renderCal();
+}
+function renderCal(){
+  document.getElementById('cal-month-lbl').textContent=`${calViewYear}年 ${calViewMonth+1}月`;
+  const grid=document.getElementById('cal-grid');
+  const firstDay=new Date(calViewYear,calViewMonth,1).getDay();
+  const daysInMonth=new Date(calViewYear,calViewMonth+1,0).getDate();
+  const daysInPrev=new Date(calViewYear,calViewMonth,0).getDate();
+  let html='';
+  // prev month padding
+  for(let i=firstDay-1;i>=0;i--){
+    html+=`<div class="cal-day other">${daysInPrev-i}</div>`;
+  }
+  // current month days
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday=d===today.getDate()&&calViewMonth===today.getMonth()&&calViewYear===today.getFullYear();
+    const isSel=calSelDate&&d===calSelDate.getDate()&&calViewMonth===calSelDate.getMonth()&&calViewYear===calSelDate.getFullYear();
+    const cls=['cal-day',isToday?'today':'',isSel?'sel':''].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" onclick="pickDay(${calViewYear},${calViewMonth},${d})">${d}</div>`;
+  }
+  // next month padding
+  const total=firstDay+daysInMonth;
+  const rem=total%7===0?0:7-(total%7);
+  for(let i=1;i<=rem;i++){
+    html+=`<div class="cal-day other">${i}</div>`;
+  }
+  grid.innerHTML=html;
+}
+function pickDay(y,m,d){
+  const picked=new Date(y,m,d);
+  const t=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+  dateOffset=Math.round((picked-t)/(86400000));
+  calSelDate=picked;
+  // update label
+  let txt;
+  if(dateOffset===0) txt='今天';
+  else txt=`${m+1}月${d}日 週${wdays[picked.getDay()]}`;
+  const el=document.getElementById('date-txt');
+  el.classList.remove('date-pop');void el.offsetWidth;el.classList.add('date-pop');
+  el.textContent=txt;
+  closeCal();
+}
+
+/* ── Product Name Search (依產品名稱) ── */
+function onProdSearch(v){
+  document.getElementById('pp-clear').style.display=v?'inline':'none';
+  if(!v.trim()){clearProdSearch();return;}
+  const q=v.toLowerCase();
+  const rows=document.querySelectorAll('#pp-scroll .prow');
+  let count=0;
+  rows.forEach(row=>{
+    const name=row.dataset.ppname||'';
+    const match=name.toLowerCase().includes(q);
+    row.style.display=match?'flex':'none';
+    if(match){
+      count++;
+      const nameEl=row.querySelector('.p-name');
+      const orig=nameEl.textContent;
+      nameEl.innerHTML=orig.replace(new RegExp(v,'gi'),m=>`<span class="hl-txt">${m}</span>`);
+    } else {
+      const nameEl=row.querySelector('.p-name');
+      nameEl.innerHTML=nameEl.textContent;
+    }
+  });
+  const emptyEl=document.getElementById('pp-empty');
+  const scrollEl=document.getElementById('pp-scroll');
+  if(count===0){
+    emptyEl.style.display='flex';scrollEl.style.display='none';
+    document.getElementById('pp-empty-txt').textContent=`找不到「${v}」的相關產品`;
+  } else {
+    emptyEl.style.display='none';scrollEl.style.display='block';
+  }
+}
+function clearProdSearch(){
+  const inp=document.getElementById('pp-input');
+  if(inp) inp.value='';
+  document.getElementById('pp-clear').style.display='none';
+  document.getElementById('pp-empty').style.display='none';
+  document.getElementById('pp-scroll').style.display='block';
+  document.querySelectorAll('#pp-scroll .prow').forEach(row=>{
+    row.style.display='flex';
+    const nameEl=row.querySelector('.p-name');
+    nameEl.innerHTML=nameEl.textContent;
+  });
+  // reset category chips to 全部
+  const chips=document.querySelectorAll('#prodcats .ctab');
+  chips.forEach((c,i)=>{c.classList.toggle('on',i===0);});
+}
+
+/* ── Success Popup ── */
+function openSucPop(name,qtyVal){
+  const now=new Date();
+  const dateStr=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
+  document.getElementById('ss-name').textContent=name;
+  document.getElementById('ss-qty').textContent=qtyVal+' 顆';
+  document.getElementById('ss-date').textContent=dateStr;
+  // restart check animation
+  const ic=document.getElementById('suc-check-ic');
+  ic.classList.remove('animate');void ic.offsetWidth;ic.classList.add('animate');
+  document.getElementById('sucOverlay').classList.add('show');
+  document.getElementById('sucPop').classList.add('open');
+}
+function closeSucPop(){
+  document.getElementById('sucOverlay').classList.remove('show');
+  document.getElementById('sucPop').classList.remove('open');
+}
+function sucGoHome(){
+  closeSucPop();
+  goHome();
+}
+function sucContinue(){
+  closeSucPop();
+}
+
+function submitRecord(){
+  closeBS();
+  openSucPop(curName,qty);
+}
+</script>
+</body>
+</html>
