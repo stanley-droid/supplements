@@ -43,16 +43,16 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
 .date-nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:2px 24px 10px;flex-shrink:0;}
 .darr{cursor:pointer;color:#004F51;font-size:22px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:background .12s;}
 .darr:active{background:rgba(0,79,81,.1);}
-.dlbl{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#374151;}
+.dlbl{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:700;color:#374151;}
 .dlbl i{font-size:16px;color:#374151;}
 
 /* ── Segment ── */
-.seg{display:flex;margin:0 16px 16px;background:#F3F4F6;border-radius:10px;padding:3px;flex-shrink:0;}
-.stab{flex:1;text-align:center;padding:9px;font-size:14px;font-weight:500;color:#9CA3AF;cursor:pointer;border-radius:8px;transition:all .18s;user-select:none;}
+.seg{display:flex;margin:0 16px 16px;background:#E9EBEE;border-radius:12px;padding:6px;flex-shrink:0;}
+.stab{flex:1;text-align:center;padding:9px;font-size:14px;font-weight:500;color:#9CA3AF;cursor:pointer;border-radius:7px;transition:all .18s;user-select:none;}
 .stab.on{background:#fff;color:#004F51;font-weight:700;box-shadow:0 1px 6px rgba(0,0,0,.1);}
 
 /* ── Search Bar ── */
-.srch{display:flex;align-items:center;gap:8px;margin:0 16px 12px;background:#F9FAFB;border:1.5px solid #E5E7EB;border-radius:10px;padding:10px 14px;flex-shrink:0;transition:border-color .15s;}
+.srch{display:flex;align-items:center;gap:8px;margin:0 16px 12px;background:#F9FAFB;border:1.5px solid transparent;border-radius:8px;padding:10px 14px;flex-shrink:0;transition:border-color .15s;}
 .srch.focused{border-color:#004F51;}
 .srch i{font-size:16px;color:#9CA3AF;flex-shrink:0;}
 .srch input{border:none;outline:none;background:transparent;font-size:14px;color:#374151;font-family:inherit;flex:1;min-width:0;}
@@ -66,20 +66,32 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
 /* ── Section Label ── */
 .sec-lbl{display:flex;align-items:center;gap:6px;padding:10px 20px 8px;font-size:12px;color:#9CA3AF;font-weight:500;flex-shrink:0;}
 .sec-lbl i{font-size:14px;}
+/* recent header (快速選取) */
+.recent-hdr{display:flex;align-items:center;gap:4px;padding:8px 20px 12px;flex-shrink:0;}
+.recent-hdr i{font-size:20px;color:#9CA3AF;}
+.recent-hdr span{font-size:13px;font-weight:500;color:#9CA3AF;}
+/* home empty state */
+.home-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:100px 24px 64px;}
+.home-empty-icon{width:40px;height:40px;border-radius:50%;border:3px solid #9CA3AF;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.home-empty-icon i{font-size:18px;color:#9CA3AF;}
+.home-empty-ttl{font-size:14px;color:#9CA3AF;text-align:center;}
+.home-empty-sub{font-size:12px;color:#D1D5DB;text-align:center;}
 
 /* ── Product Circular Image ── */
 .p-img{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#F3F4F6;}
 .p-img-lg{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#F3F4F6;}
 
 /* ── Recent Record ── */
-.rec-row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #F3F4F6;cursor:pointer;transition:background .1s;}
+.rec-row{display:flex;align-items:center;gap:8px;padding:8px 20px 14px;border-bottom:1px solid #F9FAFB;transition:background .1s;}
 .rec-row:active{background:#F9FAFB;}
+.rec-row .p-img{width:40px;height:40px;}
+.rec-info-tap{display:flex;align-items:center;gap:8px;flex:1;cursor:pointer;min-width:0;}
 .rec-info{flex:1;}
-.rec-name{font-size:15px;font-weight:700;color:#374151;}
-.rec-meta{font-size:12px;color:#9CA3AF;margin-top:2px;}
-.add-pill{width:28px;height:28px;border-radius:50%;background:rgba(0,79,81,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .12s;}
-.add-pill:active{background:rgba(0,79,81,.2);}
-.add-pill i{font-size:16px;color:#004F51;}
+.rec-name{font-size:16px;font-weight:500;color:#374151;}
+.rec-meta{font-size:12px;color:#9CA3AF;margin-top:4px;}
+.add-pill{width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.add-pill:active{opacity:.6;}
+.add-pill i{font-size:16px;color:#9CA3AF;}
 
 /* ── DB Header ── */
 .db-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 8px;flex-shrink:0;}
@@ -102,13 +114,14 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
 .p-name{font-size:15px;font-weight:700;color:#374151;}
 .p-sub{font-size:11px;color:#9CA3AF;margin-top:3px;font-weight:500;}
 
-/* ── Product Row (chevron, brand products) ── */
+/* ── Product Row (brand products, with + pill) ── */
 .bprow{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid #F3F4F6;cursor:pointer;transition:background .1s;}
 .bprow:active{background:#F9FAFB;}
+.bprow.selected{background:#F0FAF6;}
 .bp-info{flex:1;}
 .bp-name{font-size:15px;font-weight:700;color:#374151;}
 .bp-sub{font-size:11px;color:#9CA3AF;margin-top:3px;}
-.chev i{font-size:18px;color:#D1D4D9;}
+.prow.selected{background:#F0FAF6;}
 
 /* ── Manual Tab ── */
 .man-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 20px;display:flex;flex-direction:column;gap:10px;}
@@ -129,6 +142,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
 .man-rec-info{flex:1;}
 .man-rec-name{font-size:15px;font-weight:700;color:#374151;}
 .man-rec-meta{font-size:12px;color:#9CA3AF;margin-top:2px;}
+.man-rec.selected .add-pill i{color:#169E6B;font-size:22px;}
 /* manual input form */
 .mf-group{display:flex;flex-direction:column;gap:8px;}
 .mf-lbl{font-size:13px;color:#9CA3AF;font-weight:500;}
@@ -317,6 +331,105 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
 .suc-btn-home:active{background:#F9FAFB;}
 .suc-btn-cont{flex:1;height:52px;background:#169E6B;border:none;border-radius:12px;font-size:15px;font-weight:700;color:#fff;font-family:inherit;cursor:pointer;transition:opacity .12s;}
 .suc-btn-cont:active{opacity:.88;}
+
+/* ── Selection Bar (home) ── */
+.sel-bar{position:absolute;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -2px 8px rgba(0,0,0,.06);padding:16px 24px 20px;display:flex;flex-direction:column;gap:14px;z-index:50;transform:translateY(105%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.sel-bar.show{transform:translateY(0);}
+.sel-bar-inner{display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 10px;}
+.sel-count-badge{width:24px;height:24px;background:#169E6B;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.sel-bar-left{display:flex;align-items:center;gap:10px;}
+.sel-label{font-size:14px;font-weight:500;color:#374151;}
+.sel-thumbs{display:flex;align-items:center;}
+.sel-thumb{width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid #fff;object-fit:cover;}
+.sel-thumb+.sel-thumb,.sel-thumb+.sel-thumb-more{margin-left:-10px;}
+.sel-thumb-more{width:34px;height:34px;border-radius:50%;background:#E6F7F4;border:1.5px solid #169E6B;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#169E6B;flex-shrink:0;}
+.sel-next-btn{width:100%;height:56px;background:#169E6B;border:none;border-radius:12px;font-size:17px;font-weight:700;color:#fff;font-family:inherit;cursor:pointer;transition:opacity .12s;}
+.sel-next-btn:active{opacity:.88;}
+
+/* ── rec-row selected state ── */
+.rec-row.selected .add-pill i{color:#169E6B;font-size:22px;}
+
+/* ── Confirm Screen ── */
+.conf-datetime{background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);padding:16px 14px 16px 16px;display:flex;align-items:center;gap:4px;margin-bottom:16px;cursor:pointer;}
+.conf-datetime-left{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.conf-datetime-left i{font-size:20px;color:#374151;}
+.conf-datetime-left span{font-size:14px;color:#374151;}
+.conf-datetime-val{margin-left:auto;background:rgba(0,79,81,.08);padding:8px 12px;border-radius:8px;font-size:13px;font-weight:500;color:#004F51;white-space:nowrap;}
+.conf-card{background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden;margin-bottom:12px;}
+.conf-top-row{display:flex;align-items:center;gap:8px;padding:16px;}
+.conf-prod-name{font-size:16px;font-weight:500;color:#374151;}
+.conf-prod-brand{font-size:13px;color:#9CA3AF;margin-top:3px;}
+.conf-del{width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.conf-del i{font-size:16px;color:#9CA3AF;}
+.conf-divider{height:1px;background:#F9FAFB;}
+.conf-qty-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;}
+.conf-qty-lbl{font-size:13px;color:#9CA3AF;}
+.conf-stepper{display:flex;align-items:center;gap:12px;}
+.conf-minus{width:36px;height:36px;border-radius:50%;border:1.5px solid #D1D5DB;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#374151;transition:opacity .12s;user-select:none;}
+.conf-minus:active,.conf-plus:active{opacity:.7;}
+.conf-qty-num{font-size:20px;font-weight:700;color:#169E6B;min-width:22px;text-align:center;}
+.conf-qty-unit{font-size:14px;color:#374151;}
+.conf-plus{width:36px;height:36px;border-radius:50%;background:#169E6B;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#fff;transition:opacity .12s;user-select:none;}
+.conf-detail-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none;}
+.conf-detail-lbl{font-size:12px;color:#374151;}
+.conf-detail-toggle{display:flex;align-items:center;gap:2px;font-size:12px;color:#9CA3AF;}
+.conf-detail-toggle i{font-size:16px;transition:transform .2s;}
+.conf-detail-toggle i.up{transform:rotate(180deg);}
+.conf-nut-section{padding:0 20px 16px;display:none;}
+.conf-nut-hdr{font-size:14px;font-weight:500;color:#374151;padding:12px 0 8px;border-top:1px solid #F9FAFB;}
+.conf-nut-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid #F9FAFB;}
+.conf-nut-name{font-size:13px;color:#374151;}
+.conf-nut-val{font-size:13px;font-weight:500;color:#169E6B;}
+.conf-nut-note{font-size:12px;color:#004F51;padding:10px 0 4px;line-height:1.6;}
+.conf-nut-disclaimer{font-size:11px;color:#9CA3AF;text-align:center;padding:4px 0 4px;line-height:1.6;}
+
+/* ── Custom Supplement (客製化) ── */
+.custom-badge{display:inline-flex;align-items:center;gap:3px;background:#E6F7F4;border:1px solid #B2DFDB;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:600;color:#169E6B;flex-shrink:0;margin-right:4px;}
+.custom-badge i{font-size:11px;}
+.rec-row.custom-pkg .rec-name{color:#004F51;}
+.rec-row.custom-pkg .p-img{border:2px solid #169E6B;box-sizing:border-box;}
+.conf-custom-badge{display:inline-flex;align-items:center;gap:3px;background:#E6F7F4;border-radius:8px;padding:2px 8px;font-size:11px;font-weight:600;color:#169E6B;margin-right:4px;flex-shrink:0;}
+.conf-bundle-section{padding:0;display:none;}
+.conf-bundle-hdr{font-size:13px;font-weight:600;color:#374151;padding:12px 20px 8px;background:#FAFAFA;border-top:1px solid #F9FAFB;}
+.conf-bundle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid #F9FAFB;}
+.conf-bundle-left{display:flex;align-items:center;gap:10px;min-width:0;}
+.conf-bundle-img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.conf-bundle-name{font-size:13px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.conf-bundle-qty{font-size:14px;font-weight:500;color:#169E6B;flex-shrink:0;}
+.conf-bundle-footer{font-size:11px;color:#9CA3AF;text-align:center;padding:10px 20px;line-height:1.6;border-top:1px solid #F9FAFB;}
+
+/* ── Confirm Bottom Buttons ── */
+.conf-btns{display:flex;gap:12px;padding:16px 24px 24px;background:#fff;border-top:1px solid #F2F2F2;flex-shrink:0;}
+.conf-btn-back{flex:1;height:52px;background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;font-size:16px;font-weight:400;color:#374151;font-family:inherit;cursor:pointer;transition:background .12s;}
+.conf-btn-back:active{background:#F9FAFB;}
+.conf-btn-confirm{flex:1.25;height:52px;background:#169E6B;border:none;border-radius:12px;font-size:15px;font-weight:500;color:#fff;font-family:inherit;cursor:pointer;transition:opacity .12s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.conf-btn-confirm:active{opacity:.88;}
+
+/* ── Success Toast ── */
+.succ-toast{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);background:#169E6B;border-radius:24px;padding:10px 20px;display:flex;align-items:center;gap:8px;white-space:nowrap;z-index:300;opacity:0;transition:opacity .3s ease;pointer-events:none;}
+.succ-toast.show{opacity:1;}
+.succ-toast i{font-size:18px;color:#fff;}
+.succ-toast span{font-size:14px;font-weight:600;color:#fff;}
+
+/* ── Drum Date+Time Picker ── */
+.drum-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s;}
+.drum-overlay.show{opacity:1;pointer-events:auto;}
+.drum-panel{position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;padding:16px 0 32px;z-index:401;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+.drum-panel.open{transform:translateY(0);pointer-events:auto;}
+.drum-handle{width:36px;height:4px;background:#E5E7EB;border-radius:2px;margin:0 auto 14px;}
+.drum-title{font-size:15px;font-weight:600;color:#374151;text-align:center;margin-bottom:10px;}
+.drum-col-labels{display:flex;padding:0 20px 6px;}
+.drum-col-lbl{font-size:11px;color:#9CA3AF;text-align:center;}
+.drum-body{position:relative;height:150px;margin:0 20px;overflow:hidden;}
+.drum-selector{position:absolute;top:50px;left:0;right:0;height:50px;border-top:1.5px solid #169E6B;border-bottom:1.5px solid #169E6B;pointer-events:none;z-index:2;border-radius:8px;}
+.drum-fade-top{position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,#fff 0%,rgba(255,255,255,0) 100%);pointer-events:none;z-index:3;}
+.drum-fade-bot{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,#fff 0%,rgba(255,255,255,0) 100%);pointer-events:none;z-index:3;}
+.drum-cols{display:flex;height:150px;}
+.drum-col{overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.drum-col::-webkit-scrollbar{display:none;}
+.drum-item{height:50px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;user-select:none;font-size:15px;color:#374151;white-space:nowrap;}
+.drum-confirm-btn{display:block;width:calc(100% - 40px);margin:14px 20px 0;padding:14px 0;background:#169E6B;border:none;border-radius:14px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;transition:opacity .15s;}
+.drum-confirm-btn:active{opacity:.85;}
 </style>
 </head>
 <body>
@@ -326,15 +439,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
      S1 · 新增保健品服用紀錄
 ══════════════════════════ -->
 <div class="screen active" id="s-home">
-  <div class="sb"><span class="sb-time light">9:41</span><div class="sb-icons" style="color:#374151"><i class="ri-wifi-line" style="font-size:14px"></i><i class="ri-battery-2-charge-line" style="font-size:16px"></i></div></div>
-  <div class="nav">
+  <div class="sb"><span class="sb-time light">9:41</span><div class="sb-icons" style="color:#374151"><i class="ri-signal-wifi-3-fill" style="font-size:13px"></i><i class="ri-wifi-fill" style="font-size:14px"></i><i class="ri-battery-fill" style="font-size:16px"></i></div></div>
+  <div class="nav" style="border-bottom:1px solid #F2F2F2;padding:4px 16px 10px;">
     <div class="ic" onclick="back()"><i class="ri-arrow-left-s-line"></i></div>
     <div class="nav-title sm">新增保健品服用紀錄</div>
     <div class="ic"></div>
   </div>
   <div class="date-nav">
     <div class="darr" onclick="changeDate(-1)"><i class="ri-arrow-left-s-line"></i></div>
-    <div class="dlbl" id="date-lbl" onclick="openCal()" style="cursor:pointer;"><i class="ri-calendar-line"></i> <span id="date-txt">今天</span></div>
+    <div class="dlbl" id="date-lbl" onclick="openCal()" style="cursor:pointer;"><span id="date-txt">今天</span></div>
     <div class="darr" onclick="changeDate(1)"><i class="ri-arrow-right-s-line"></i></div>
   </div>
   <div class="seg">
@@ -348,74 +461,51 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
 
   <!-- 資料庫 -->
   <div id="h-lib" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
-    <!-- Fixed cat bar (mirrors 澳佳寶 style) -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 10px;flex-shrink:0;">
-      <div class="cats" id="hcats" style="margin:0;padding:0 0 0 0;flex:1;">
-        <div class="ctab on" onclick="setCat(this,'hcats')">全部</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">維他命</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">礦物質</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">魚油</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">益生菌</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">葉黃素</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">膠原蛋白</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">輔酶Q10</div>
-        <div class="ctab" onclick="setCat(this,'hcats')">蛋白質</div>
-      </div>
-      <span class="db-cnt" id="h-lib-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">8 項</span>
-    </div>
     <div class="scroll">
-      <div class="sec-lbl"><i class="ri-history-line"></i> 最近紀錄</div>
-      <div class="rec-row" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','DHC · 維他命B群 100錠')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitb/100/100'">
-        <div class="rec-info"><div class="rec-name">維他命B群</div><div class="rec-meta">DHC · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+      <div class="recent-hdr"><i class="ri-time-line"></i><span>最近紀錄 (快速選取)</span></div>
+      <!-- recent records -->
+      <div id="home-recent-list">
+        <div class="rec-row custom-pkg" onclick="toggleSelect(this,'40代女生包-W407','https://picsum.photos/seed/w407/100/100','Cofit','custom')">
+          <img class="p-img" src="https://picsum.photos/seed/w407/100/100">
+          <div class="rec-info"><div class="rec-name">40代女生包-W407</div><div class="rec-meta">Cofit · 1包</div></div>
+          <span class="custom-badge"><i class="ri-box-3-line"></i>客製化保健品</span>
+          <div class="add-pill"><i class="ri-add-line"></i></div>
+        </div>
+        <div class="rec-row custom-pkg" onclick="toggleSelect(this,'基礎保健包-M301','https://picsum.photos/seed/m301/100/100','Cofit','custom')">
+          <img class="p-img" src="https://picsum.photos/seed/m301/100/100">
+          <div class="rec-info"><div class="rec-name">基礎保健包-M301</div><div class="rec-meta">Cofit · 1包</div></div>
+          <span class="custom-badge"><i class="ri-box-3-line"></i>客製化保健品</span>
+          <div class="add-pill"><i class="ri-add-line"></i></div>
+        </div>
+        <div class="rec-row">
+          <div class="rec-info-tap" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','DHC · 1顆',this.closest('.rec-row'))">
+            <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitb/100/100'">
+            <div class="rec-info"><div class="rec-name">維他命B群</div><div class="rec-meta">DHC · 1顆</div></div>
+          </div>
+          <div class="add-pill" onclick="toggleSelect(this.closest('.rec-row'),'維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','DHC · 1顆')"><i class="ri-add-line"></i></div>
+        </div>
+        <div class="rec-row">
+          <div class="rec-info-tap" onclick="openBS('頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 2顆',this.closest('.rec-row'))">
+            <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fishoil/100/100'">
+            <div class="rec-info"><div class="rec-name">頂級魚油</div><div class="rec-meta">Cofit · 2顆</div></div>
+          </div>
+          <div class="add-pill" onclick="toggleSelect(this.closest('.rec-row'),'頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 2顆')"><i class="ri-add-line"></i></div>
+        </div>
+        <div class="rec-row">
+          <div class="rec-info-tap" onclick="openBS('綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 1顆',this.closest('.rec-row'))">
+            <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/multi/100/100'">
+            <div class="rec-info"><div class="rec-name">綜合維他命</div><div class="rec-meta">善存 · 1顆</div></div>
+          </div>
+          <div class="add-pill" onclick="toggleSelect(this.closest('.rec-row'),'綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 1顆')"><i class="ri-add-line"></i></div>
+        </div>
       </div>
-      <div class="rec-row" onclick="openBS('頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fishoil/100/100'">
-        <div class="rec-info"><div class="rec-name">頂級魚油</div><div class="rec-meta">Cofit · 2顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-      <div class="rec-row" onclick="openBS('綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 綜合維他命')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/multi/100/100'">
-        <div class="rec-info"><div class="rec-name">綜合維他命</div><div class="rec-meta">善存 · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-
-      <div class="db-hdr"><span class="db-ttl">保健品資料庫</span></div>
-      <div class="prow" data-cat="維他命" onclick="openBS('維他命D3','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','Cofit · 維他命D3 1000IU')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitd/100/100'">
-        <div class="p-info"><div class="p-name">維他命D3</div><div class="p-sub">Cofit · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-      <div class="prow" data-cat="維他命" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Cofit · 維他命B群 100錠')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitb2/100/100'">
-        <div class="p-info"><div class="p-name">維他命B群</div><div class="p-sub">Cofit · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-      <div class="prow" data-cat="葉黃素" onclick="openBS('智利酒果晶菠菜葉黃素','https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop','Cofit · 葉黃素 10mg')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/lutein/100/100'">
-        <div class="p-info"><div class="p-name">智利酒果晶菠菜葉黃素</div><div class="p-sub">Cofit · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-      <div class="prow" data-cat="礦物質" onclick="openBS('Cofit 鎂日補給錠','https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop','Cofit · 鎂片 250mg')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/mag/100/100'">
-        <div class="p-info"><div class="p-name">Cofit 鎂日補給錠</div><div class="p-sub">Cofit · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-      <div class="prow" data-cat="膠原蛋白" onclick="openBS('極濃透明質酸鈉','https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop','Cofit · 透明質酸 500mg')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/hya/100/100'">
-        <div class="p-info"><div class="p-name">極濃透明質酸鈉</div><div class="p-sub">Cofit · 2顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-      <div class="prow" data-cat="魚油" onclick="openBS('深海魚油 1000mg','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fish3/100/100'">
-        <div class="p-info"><div class="p-name">深海魚油 1000mg</div><div class="p-sub">Cofit · 2顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
-      </div>
-      <div class="prow" data-cat="益生菌" onclick="openBS('益生菌 300億','https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop','Cofit · 益生菌 300億')">
-        <img class="p-img" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/prob2/100/100'">
-        <div class="p-info"><div class="p-name">益生菌 300億</div><div class="p-sub">Cofit · 1包</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+      <!-- empty state (shown when no recent records) -->
+      <div id="home-empty-state" style="display:none;">
+        <div class="home-empty">
+          <div class="home-empty-icon"><i class="ri-time-line"></i></div>
+          <p class="home-empty-ttl">目前還沒有紀錄喔！</p>
+          <p class="home-empty-sub">請透過上方搜尋列尋找您的保健品</p>
+        </div>
       </div>
     </div>
   </div>
@@ -446,21 +536,21 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
       <!-- Recent manual records -->
       <div style="margin-top:10px;">
         <div class="sec-lbl" style="padding:0 0 4px;"><i class="ri-history-line"></i> 最近手動紀錄</div>
-        <div class="man-rec" onclick="openManBS('葡萄子','NOW','1')">
+        <div class="man-rec" onclick="toggleManSelect(this,'葡萄子','NOW · 1顆',1)">
           <div class="man-rec-info">
             <div class="man-rec-name">葡萄子</div>
             <div class="man-rec-meta">1 顆・NOW</div>
           </div>
           <div class="add-pill"><i class="ri-add-line"></i></div>
         </div>
-        <div class="man-rec" onclick="openManBS('黑瑪卡','大研生醫','2')">
+        <div class="man-rec" onclick="toggleManSelect(this,'黑瑪卡','大研生醫 · 2顆',2)">
           <div class="man-rec-info">
             <div class="man-rec-name">黑瑪卡</div>
             <div class="man-rec-meta">2 顆・大研生醫</div>
           </div>
           <div class="add-pill"><i class="ri-add-line"></i></div>
         </div>
-        <div class="man-rec" onclick="openManBS('薑黃粉','自製','1')">
+        <div class="man-rec" onclick="toggleManSelect(this,'薑黃粉','自製 · 1匙',1)">
           <div class="man-rec-info">
             <div class="man-rec-name">薑黃粉</div>
             <div class="man-rec-meta">1 匙・自製</div>
@@ -493,21 +583,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
     <input id="b-input" type="text" placeholder="請輸入品牌名稱" oninput="onBrandSearch(this.value)" autocomplete="off">
     <i class="ri-close-line xclear" id="b-clear" style="display:none;" onclick="clearBrand()"></i>
   </div>
-  <div id="brand-cats-bar" style="display:flex;align-items:center;justify-content:space-between;padding-right:20px;">
-    <div class="cats" id="brandcats" style="flex:1;">
-      <div class="ctab on" onclick="setBrandCat(this)">全部</div>
-      <div class="ctab" onclick="setBrandCat(this)">維他命</div>
-      <div class="ctab" onclick="setBrandCat(this)">礦物質</div>
-      <div class="ctab" onclick="setBrandCat(this)">魚油</div>
-      <div class="ctab" onclick="setBrandCat(this)">益生菌</div>
-      <div class="ctab" onclick="setBrandCat(this)">葉黃素</div>
-      <div class="ctab" onclick="setBrandCat(this)">膠原蛋白</div>
-      <div class="ctab" onclick="setBrandCat(this)">輔酶Q10</div>
-      <div class="ctab" onclick="setBrandCat(this)">蛋白質</div>
-    </div>
-    <span class="db-cnt" id="brand-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">18 項</span>
-  </div>
-
   <!-- Brand A-Z list -->
   <div id="brand-list" class="scroll" style="position:relative;">
     <div class="alpha-grp"><span>A</span></div>
@@ -561,20 +636,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
       <input id="pp-input" type="text" placeholder="請輸入產品名稱" autocomplete="off" oninput="onProdSearch(this.value)">
       <i class="ri-close-line xclear" id="pp-clear" style="display:none;" onclick="clearProdSearch()"></i>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;padding-right:20px;">
-      <div class="cats" id="prodcats" style="flex:1;">
-        <div class="ctab on" onclick="setCat(this,'prodcats')">全部</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">維他命</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">礦物質</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">魚油</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">益生菌</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">葉黃素</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">膠原蛋白</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">輔酶Q10</div>
-        <div class="ctab" onclick="setCat(this,'prodcats')">蛋白質</div>
-      </div>
-      <span class="db-cnt" id="prod-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">8 項</span>
-    </div>
     <div id="pp-empty" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
       <div class="empty-state">
         <i class="ri-search-eye-line"></i>
@@ -583,45 +644,45 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
       </div>
     </div>
     <div class="scroll" id="pp-scroll">
-      <div class="prow" data-cat="維他命" data-ppname="維他命A Vitamin A" onclick="openBS('維他命A','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','DHC · 維他命A 2500IU')">
+      <div class="prow" data-cat="維他命" data-ppname="維他命A Vitamin A" onclick="openBS('維他命A','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','DHC · 維他命A 2500IU',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vita/100/100'">
         <div class="p-info"><div class="p-name">維他命A</div><div class="p-sub">DHC · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'維他命A','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','DHC · 維他命A 2500IU')"><i class="ri-add-line"></i></div>
       </div>
-      <div class="prow" data-cat="維他命" data-ppname="維他命B群 Vitamin B complex" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Cofit · 維他命B群 100錠')">
+      <div class="prow" data-cat="維他命" data-ppname="維他命B群 Vitamin B complex" onclick="openBS('維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Cofit · 維他命B群 100錠',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitb2/100/100'">
         <div class="p-info"><div class="p-name">維他命B群</div><div class="p-sub">Cofit · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'維他命B群','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Cofit · 維他命B群 100錠')"><i class="ri-add-line"></i></div>
       </div>
-      <div class="prow" data-cat="維他命" data-ppname="維他命D3 Vitamin D" onclick="openBS('維他命D3','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','Cofit · 維他命D3 1000IU')">
+      <div class="prow" data-cat="維他命" data-ppname="維他命D3 Vitamin D" onclick="openBS('維他命D3','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','Cofit · 維他命D3 1000IU',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitd/100/100'">
         <div class="p-info"><div class="p-name">維他命D3</div><div class="p-sub">Cofit · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'維他命D3','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','Cofit · 維他命D3 1000IU')"><i class="ri-add-line"></i></div>
       </div>
-      <div class="prow" data-cat="維他命" data-ppname="維他命C Vitamin C 1000" onclick="openBS('維他命C 1000','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','NOW · 維他命C 1000mg')">
+      <div class="prow" data-cat="維他命" data-ppname="維他命C Vitamin C 1000" onclick="openBS('維他命C 1000','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','NOW · 維他命C 1000mg',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitc2/100/100'">
         <div class="p-info"><div class="p-name">維他命C 1000</div><div class="p-sub">NOW · 2顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'維他命C 1000','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','NOW · 維他命C 1000mg')"><i class="ri-add-line"></i></div>
       </div>
-      <div class="prow" data-cat="礦物質" data-ppname="鈣片 Calcium 碳酸鈣 礦物質" onclick="openBS('鈣片','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','萊萃美 · 鈣片 600mg')">
+      <div class="prow" data-cat="礦物質" data-ppname="鈣片 Calcium 碳酸鈣 礦物質" onclick="openBS('鈣片','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','萊萃美 · 鈣片 600mg',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/cal2/100/100'">
         <div class="p-info"><div class="p-name">鈣片</div><div class="p-sub">萊萃美 · 3顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'鈣片','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','萊萃美 · 鈣片 600mg')"><i class="ri-add-line"></i></div>
       </div>
-      <div class="prow" data-cat="魚油" data-ppname="Omega-3 魚油 Fish Oil" onclick="openBS('Omega-3 魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','健安喜 · Omega-3 1200mg')">
+      <div class="prow" data-cat="魚油" data-ppname="Omega-3 魚油 Fish Oil" onclick="openBS('Omega-3 魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','健安喜 · Omega-3 1200mg',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/omega/100/100'">
         <div class="p-info"><div class="p-name">Omega-3 魚油</div><div class="p-sub">健安喜 · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'Omega-3 魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','健安喜 · Omega-3 1200mg')"><i class="ri-add-line"></i></div>
       </div>
-      <div class="prow" data-cat="魚油" data-ppname="頂級魚油 深海魚油 premium fish oil" onclick="openBS('頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg')">
+      <div class="prow" data-cat="魚油" data-ppname="頂級魚油 深海魚油 premium fish oil" onclick="openBS('頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fishoil2/100/100'">
         <div class="p-info"><div class="p-name">頂級魚油</div><div class="p-sub">Cofit · 2顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'頂級魚油','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Cofit · 深海魚油 1000mg')"><i class="ri-add-line"></i></div>
       </div>
-      <div class="prow" data-cat="維他命" data-ppname="綜合維他命 multivitamin 善存" onclick="openBS('綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 綜合維他命')">
+      <div class="prow" data-cat="維他命" data-ppname="綜合維他命 multivitamin 善存" onclick="openBS('綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 綜合維他命',this)">
         <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/multi2/100/100'">
         <div class="p-info"><div class="p-name">綜合維他命</div><div class="p-sub">善存 · 1顆</div></div>
-        <div class="add-pill"><i class="ri-add-line"></i></div>
+        <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.prow'),'綜合維他命','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','善存 · 綜合維他命')"><i class="ri-add-line"></i></div>
       </div>
     </div>
   </div>
@@ -651,23 +712,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
       onblur="this.closest('.srch').classList.remove('focused')">
     <i class="ri-close-line xclear" id="bp-clear" style="display:none;" onclick="clearBpSearch()"></i>
   </div>
-  <!-- normal: divider + cats -->
+  <!-- normal: divider -->
   <div id="bp-normal-bar">
     <div class="divl"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;flex-shrink:0;">
-      <div class="cats" id="bpcats" style="margin:0;padding:0;flex:1;">
-        <div class="ctab on" onclick="setCat(this,'bpcats')">全部</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">維他命</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">礦物質</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">魚油</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">益生菌</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">葉黃素</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">膠原蛋白</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">輔酶Q10</div>
-        <div class="ctab" onclick="setCat(this,'bpcats')">蛋白質</div>
-      </div>
-      <span class="db-cnt" id="bp-cnt" style="white-space:nowrap;padding-left:8px;flex-shrink:0;">7 項</span>
-    </div>
   </div>
   <!-- search result header -->
   <div id="bp-res-hdr" style="display:none;padding:10px 20px 4px;font-size:13px;font-weight:700;color:#374151;flex-shrink:0;"></div>
@@ -680,40 +727,40 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
     </div>
   </div>
   <div class="scroll" id="bp-scroll">
-    <div class="bprow" data-cat="維他命" data-name="維他命C 1000 Vitamin C" onclick="openBS('維他命C 1000','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Blackmores · 維他命C 1000mg')">
+    <div class="bprow" data-cat="維他命" data-name="維他命C 1000 Vitamin C" onclick="openBS('維他命C 1000','https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop','Blackmores · 維他命C 1000mg',this)">
       <img class="p-img" src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/vitc/100/100'">
       <div class="bp-info"><div class="bp-name">維他命C 1000</div><div class="bp-sub">維他命 · 每次 1 顆 · 每日 1 次</div></div>
-      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+      <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.bprow'),'維他命A','https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop','DHC · 維他命A 2500IU')"><i class="ri-add-line"></i></div>
     </div>
-    <div class="bprow" data-cat="魚油" data-name="深海魚油 Fish Oil Omega" onclick="openBS('深海魚油 Fish Oil','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Blackmores · 深海魚油 1000mg')">
+    <div class="bprow" data-cat="魚油" data-name="深海魚油 Fish Oil Omega" onclick="openBS('深海魚油 Fish Oil','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Blackmores · 深海魚油 1000mg',this)">
       <img class="p-img" src="https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/fish/100/100'">
       <div class="bp-info"><div class="bp-name">深海魚油 Fish Oil</div><div class="bp-sub">魚油 · 每次 2 顆 · 每日 1 次</div></div>
-      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+      <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.bprow'),'深海魚油 Fish Oil','https://images.unsplash.com/photo-1608328847735-5cf0e89da66e?w=100&h=100&fit=crop','Blackmores · 深海魚油 1000mg')"><i class="ri-add-line"></i></div>
     </div>
-    <div class="bprow" data-cat="礦物質" data-name="鈣片 Calcium 碳酸鈣" onclick="openBS('鈣片 Calcium','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','Blackmores · 鈣片 600mg')">
+    <div class="bprow" data-cat="礦物質" data-name="鈣片 Calcium 碳酸鈣" onclick="openBS('鈣片 Calcium','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','Blackmores · 鈣片 600mg',this)">
       <img class="p-img" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/cal/100/100'">
       <div class="bp-info"><div class="bp-name">鈣片 Calcium</div><div class="bp-sub">礦物質 · 每次 1 顆 · 每日 2 次</div></div>
-      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+      <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.bprow'),'鈣片 Calcium','https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop','Blackmores · 鈣片 600mg')"><i class="ri-add-line"></i></div>
     </div>
-    <div class="bprow" data-cat="葉黃素" data-name="葉黃素 Lutein 護眼" onclick="openBS('葉黃素 Lutein','https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop','Blackmores · 葉黃素 10mg')">
+    <div class="bprow" data-cat="葉黃素" data-name="葉黃素 Lutein 護眼" onclick="openBS('葉黃素 Lutein','https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop','Blackmores · 葉黃素 10mg',this)">
       <img class="p-img" src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/lut/100/100'">
       <div class="bp-info"><div class="bp-name">葉黃素 Lutein</div><div class="bp-sub">維他命 · 每次 1 顆 · 每日 1 次</div></div>
-      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+      <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.bprow'),'葉黃素 Lutein','https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=100&h=100&fit=crop','Blackmores · 葉黃素 10mg')"><i class="ri-add-line"></i></div>
     </div>
-    <div class="bprow" data-cat="益生菌" data-name="益生菌 Probiotics 乳酸菌" onclick="openBS('益生菌 Probiotics','https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop','Blackmores · 益生菌 30億')">
+    <div class="bprow" data-cat="益生菌" data-name="益生菌 Probiotics 乳酸菌" onclick="openBS('益生菌 Probiotics','https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop','Blackmores · 益生菌 30億',this)">
       <img class="p-img" src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/prob/100/100'">
       <div class="bp-info"><div class="bp-name">益生菌 Probiotics</div><div class="bp-sub">益生菌 · 每次 1 包 · 每日 1 次</div></div>
-      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+      <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.bprow'),'益生菌 Probiotics','https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=100&h=100&fit=crop','Blackmores · 益生菌 30億')"><i class="ri-add-line"></i></div>
     </div>
-    <div class="bprow" data-cat="輔酶Q10" data-name="CoQ10 輔酶 輔酵素" onclick="openBS('CoQ10 輔酶','https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop','Blackmores · CoQ10 150mg')">
+    <div class="bprow" data-cat="輔酶Q10" data-name="CoQ10 輔酶 輔酵素" onclick="openBS('CoQ10 輔酶','https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop','Blackmores · CoQ10 150mg',this)">
       <img class="p-img" src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/coq/100/100'">
       <div class="bp-info"><div class="bp-name">CoQ10 輔酶</div><div class="bp-sub">維他命 · 每次 1 顆 · 每日 1 次</div></div>
-      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+      <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.bprow'),'CoQ10 輔酶','https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=100&h=100&fit=crop','Blackmores · CoQ10 150mg')"><i class="ri-add-line"></i></div>
     </div>
-    <div class="bprow" data-cat="礦物質" data-name="鎂片 Magnesium 氧化鎂" onclick="openBS('鎂片 Magnesium','https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop','Blackmores · 鎂片 250mg')">
+    <div class="bprow" data-cat="礦物質" data-name="鎂片 Magnesium 氧化鎂" onclick="openBS('鎂片 Magnesium','https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop','Blackmores · 鎂片 250mg',this)">
       <img class="p-img" src="https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop" onerror="this.src='https://picsum.photos/seed/mag/100/100'">
       <div class="bp-info"><div class="bp-name">鎂片 Magnesium</div><div class="bp-sub">礦物質 · 每次 1 顆 · 每日 2 次</div></div>
-      <div class="chev"><i class="ri-arrow-right-s-line"></i></div>
+      <div class="add-pill" onclick="event.stopPropagation();toggleSelect(this.closest('.bprow'),'鎂片 Magnesium','https://images.unsplash.com/photo-1626158964584-1f5dfcef33de?w=100&h=100&fit=crop','Blackmores · 鎂片 250mg')"><i class="ri-add-line"></i></div>
     </div>
   </div>
 </div>
@@ -737,6 +784,32 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
     <input id="cam-file-input" type="file" accept="image/*" style="display:none;" onchange="afterScan()">
     <div class="cam-cap" onclick="afterScan()"></div>
     <div class="cam-flip"><i class="ri-camera-switch-line"></i></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     S5 · 確認紀錄清單
+══════════════════════════ -->
+<div class="screen" id="s-confirm">
+  <div class="sb"><span class="sb-time light">9:41</span><div class="sb-icons" style="color:#374151"><i class="ri-signal-wifi-3-fill" style="font-size:13px"></i><i class="ri-wifi-fill" style="font-size:14px"></i><i class="ri-battery-fill" style="font-size:16px"></i></div></div>
+  <div class="nav" style="border-bottom:1px solid #F2F2F2;padding:4px 16px 10px;">
+    <div class="ic" onclick="back()"><i class="ri-arrow-left-s-line"></i></div>
+    <div class="nav-title sm" id="conf-title">確認紀錄清單 (0)</div>
+    <div class="ic"></div>
+  </div>
+  <div class="scroll" style="padding:16px 20px;">
+    <div class="conf-datetime" onclick="openDrum()">
+      <div class="conf-datetime-left"><i class="ri-time-line"></i><span>服用時間</span></div>
+      <div class="conf-datetime-val" id="conf-dt-val">2026/04/15  上午 09:30</div>
+    </div>
+    <div id="conf-cards"></div>
+  </div>
+  <div class="conf-btns">
+    <button class="conf-btn-back" onclick="back()">返回修改</button>
+    <button class="conf-btn-confirm" onclick="submitAllRecords()">
+      <i class="ri-checkbox-circle-line"></i>
+      <span id="conf-submit-txt">確認紀錄 (0 項)</span>
+    </button>
   </div>
 </div>
 
@@ -809,7 +882,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
   <!-- Bottom buttons -->
   <div class="rc-btns">
     <button class="rc-btn-cancel" onclick="closeBS()">取消</button>
-    <button class="rc-btn-confirm" onclick="submitRecord()">確認紀錄</button>
+    <button class="rc-btn-confirm" onclick="submitRecord()">加入選取</button>
   </div>
 </div>
 
@@ -856,7 +929,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
       <div id="nut-list" style="display:flex;flex-direction:column;gap:8px;"></div>
     </div>
     <!-- CTA -->
-    <button class="cta" onclick="submitManRecord()">直接紀錄</button>
+    <button class="cta" onclick="submitManRecord()">加入選取清單</button>
   </div>
 </div>
 
@@ -878,6 +951,49 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
   <div class="cal-grid" id="cal-grid"></div>
 </div>
 
+<!-- Success toast -->
+<div class="succ-toast" id="succ-toast">
+  <i class="ri-checkbox-circle-fill"></i>
+  <span id="succ-toast-txt">已經紀錄 0 項保健品</span>
+</div>
+
+<!-- Selection Bar (phone-level, shows over all screens) -->
+<div class="sel-bar" id="sel-bar">
+  <div class="sel-bar-inner">
+    <div class="sel-bar-left">
+      <div class="sel-count-badge" id="sel-count">0</div>
+      <span class="sel-label">已選取品項</span>
+    </div>
+    <div class="sel-thumbs" id="sel-thumbs"></div>
+  </div>
+  <button class="sel-next-btn" onclick="goConfirm()">下一步：確認份量與時間</button>
+</div>
+
+<!-- Drum Date+Time Picker -->
+<div class="drum-overlay" id="drumOverlay" onclick="closeDrum()"></div>
+<div class="drum-panel" id="drumPanel">
+  <div class="drum-handle"></div>
+  <div class="drum-title">選擇服用日期與時間</div>
+  <div class="drum-col-labels" id="drum-labels">
+    <div class="drum-col-lbl" style="flex:2;">日期</div>
+    <div class="drum-col-lbl" style="flex:1.2;">上/下午</div>
+    <div class="drum-col-lbl" style="flex:1;">時</div>
+    <div class="drum-col-lbl" style="flex:1;">分</div>
+  </div>
+  <div class="drum-body">
+    <div class="drum-selector"></div>
+    <div class="drum-fade-top"></div>
+    <div class="drum-fade-bot"></div>
+    <div class="drum-cols">
+      <div class="drum-col" id="drum-date" style="flex:2;"></div>
+      <div class="drum-col" id="drum-ampm" style="flex:1.2;"></div>
+      <div class="drum-col" id="drum-hr" style="flex:1;"></div>
+      <div class="drum-col" id="drum-min" style="flex:1;"></div>
+    </div>
+  </div>
+  <button class="drum-confirm-btn" onclick="confirmDrum()">確認</button>
+</div>
+
 </div><!-- /.phone -->
 <script>
 /* ── Navigation ── */
@@ -891,6 +1007,7 @@ function go(id){
   const done=()=>{p.style.display='none';p.classList.remove('exit');n.classList.remove('enter');};
   n.addEventListener('animationend',done,{once:true});
   stk.push(id);
+  updateSelBar();
 }
 function back(){
   if(stk.length<=1)return;
@@ -899,6 +1016,7 @@ function back(){
   n.style.display='flex'; n.classList.add('enter-back'); p.classList.add('exit-back');
   const done=()=>{p.style.display='none';p.classList.remove('exit-back');n.classList.remove('enter-back');};
   p.addEventListener('animationend',done,{once:true});
+  updateSelBar();
 }
 function goHome(){
   while(stk.length>1)stk.pop();
@@ -944,7 +1062,6 @@ function bsTab(mode){
   document.getElementById('bt1').classList.toggle('on',isBrand);
   document.getElementById('bt2').classList.toggle('on',!isBrand);
   document.getElementById('brand-srch-bar').style.display=isBrand?'flex':'none';
-  document.getElementById('brand-cats-bar').style.display=isBrand?'block':'none';
   document.getElementById('brand-list').style.display=isBrand?'block':'none';
   document.getElementById('brand-results').style.display='none';
   document.getElementById('brand-empty').style.display='none';
@@ -992,7 +1109,6 @@ function onBrandSearch(v){
   const matches=allBrands.filter(b=>b.toLowerCase().includes(v.toLowerCase()));
   document.getElementById('brand-list').style.display='none';
   document.getElementById('alpha-side').style.display='none';
-  document.getElementById('brand-cats-bar').style.display='none';
   if(!matches.length){
     document.getElementById('brand-results').style.display='none';
     document.getElementById('brand-empty').style.display='flex';
@@ -1014,10 +1130,6 @@ function clearBrand(){
   document.getElementById('brand-results').style.display='none';
   document.getElementById('brand-empty').style.display='none';
   document.getElementById('alpha-side').style.display='flex';
-  document.getElementById('brand-cats-bar').style.display='block';
-  // reset chips to 全部
-  document.querySelectorAll('#brandcats .ctab').forEach((c,i)=>c.classList.toggle('on',i===0));
-  setBrandCat(document.querySelector('#brandcats .ctab'));
 }
 
 /* ── Brand Product Search ── */
@@ -1103,7 +1215,8 @@ function setCat(el,gid){
 }
 
 /* ── Bottom Sheet · 紀錄確認 ── */
-let qty=1, curImg='', curName='';
+let qty=1, curImg='', curName='', curBrand='';
+let curBSEl=null;
 let nutOpen=true;
 
 // Mock nutrients per product keyword
@@ -1118,6 +1231,25 @@ const nutDB={
 };
 const defaultNuts=[{n:'維生素 B1',v:'1.5 mg'},{n:'維生素 B2',v:'1.7 mg'},{n:'維生素 B6',v:'2 mg'},{n:'葉酸',v:'400 mcg'}];
 
+// Nutritional facts (label nutrients)
+const nutrientsDB={
+  '維他命C':[{n:'維生素 C',v:'1000 mg'}],
+  '魚油':[{n:'總脂肪',v:'1 g'},{n:'EPA',v:'360 mg'},{n:'DHA',v:'240 mg'}],
+  '益生菌':[{n:'膳食纖維',v:'1 g'},{n:'活性乳酸菌',v:'40 億 CFU'}],
+  '鈣':[{n:'鈣',v:'600 mg'},{n:'維生素 D3',v:'400 IU'}],
+  '鎂':[{n:'鎂',v:'250 mg'}],
+  '葉黃素':[{n:'葉黃素',v:'10 mg'},{n:'玉米黃素',v:'2 mg'}],
+  '葡萄':[{n:'維生素 C',v:'60 mg'}],
+};
+const defaultNutrients=[{n:'維生素 B1',v:'1.5 mg'},{n:'維生素 B2',v:'1.7 mg'}];
+
+function getNutrients(name){
+  for(const key of Object.keys(nutrientsDB)){
+    if(name.includes(key)) return nutrientsDB[key];
+  }
+  return defaultNutrients;
+}
+
 function getNuts(name){
   for(const key of Object.keys(nutDB)){
     if(name.includes(key)) return nutDB[key];
@@ -1125,8 +1257,8 @@ function getNuts(name){
   return defaultNuts;
 }
 
-function openBS(name,img,brand){
-  curName=name; curImg=img; qty=1;
+function openBS(name,img,brand,el){
+  curName=name; curImg=img; curBrand=brand; curBSEl=el||null; qty=1;
   document.getElementById('c-name').textContent=name;
   document.getElementById('c-brand').textContent=brand;
   document.getElementById('c-img').src=img;
@@ -1147,9 +1279,17 @@ function closeBS(){
   document.getElementById('bsOverlay').classList.remove('show');
   document.getElementById('bsPanel').classList.remove('open');
 }
+function scaleNutVal(v,q){
+  const m=v.match(/^([\d.]+)(.*)/);
+  if(!m||q===1)return v;
+  const scaled=Math.round(parseFloat(m[1])*q*100)/100;
+  return scaled+m[2];
+}
 function changeQty(d){
   qty=Math.max(1,qty+d);
   document.getElementById('c-qty-num').textContent=qty;
+  const nuts=getNuts(curName);
+  document.getElementById('rc-nut-list').innerHTML=nuts.map(n=>`<div class="rc-nut-row"><span class="rc-nut-name">${n.n}</span><span class="rc-nut-val">${scaleNutVal(n.v,qty)}</span></div>`).join('');
 }
 function toggleNutList(){
   nutOpen=!nutOpen;
@@ -1157,7 +1297,7 @@ function toggleNutList(){
   document.getElementById('rc-nut-arr').classList.toggle('flip',nutOpen);
 }
 /* ── Manual Input Bottom Sheet ── */
-let manQtyVal=2;
+let manQtyVal=1;
 
 function nutRowHTML(name='',val=''){
   const row=document.createElement('div');
@@ -1212,8 +1352,8 @@ function afterScan(){
   },900);
 }
 
-function openManBS(name='',brand='',qty='2'){
-  manQtyVal=parseInt(qty)||2;
+function openManBS(name='',brand='',qty='1'){
+  manQtyVal=parseInt(qty)||1;
   document.getElementById('mf-name').value=name;
   document.getElementById('mf-brand').value=brand;
   document.getElementById('mf-qty-val').textContent=manQtyVal;
@@ -1230,9 +1370,18 @@ function manQty(d){
   document.getElementById('mf-qty-val').textContent=manQtyVal;
 }
 function submitManRecord(){
-  const name=document.getElementById('mf-name').value||'手動品項';
+  const name=(document.getElementById('mf-name').value||'手動品項').trim();
+  const brand=(document.getElementById('mf-brand').value||'').trim();
   closeManBS();
-  openSucPop(name,manQtyVal);
+  const img=`https://picsum.photos/seed/${encodeURIComponent(name)}/100/100`;
+  const brandLabel=brand?`${brand} · ${manQtyVal}顆`:`${manQtyVal}顆`;
+  const existing=cart.findIndex(i=>i.name===name);
+  if(existing>=0){
+    cart[existing].qty=manQtyVal;
+  } else {
+    cart.push({name,img,brand:brandLabel,qty:manQtyVal,type:'manual'});
+  }
+  updateSelBar();
 }
 
 /* ── Calendar Picker ── */
@@ -1373,8 +1522,349 @@ function sucContinue(){
 }
 
 function submitRecord(){
+  const existing=cart.findIndex(i=>i.name===curName);
+  if(existing>=0){
+    cart[existing].qty=qty;
+  } else {
+    cart.push({name:curName,img:curImg,brand:curBrand,qty,type:'regular',el:curBSEl});
+  }
+  // visual feedback on the triggering row
+  if(curBSEl){
+    curBSEl.classList.add('selected');
+    const pill=curBSEl.querySelector('.add-pill');
+    if(pill) pill.innerHTML='<i class="ri-checkbox-circle-fill"></i>';
+    const chev=curBSEl.querySelector('.chev');
+    if(chev) chev.innerHTML='<i class="ri-checkbox-circle-fill" style="color:#169E6B;font-size:22px;"></i>';
+  }
   closeBS();
-  openSucPop(curName,qty);
+  updateSelBar();
+}
+
+/* ── Custom Supplement Database ── */
+const customDB={
+  '40代女生包-W407':{
+    brand:'Cofit', unit:'包',
+    subItems:[
+      {name:'核心營養膠囊',qty:'1顆',img:'https://picsum.photos/seed/core/100/100'},
+      {name:'85% Omega-3 極海精粹魚油',qty:'1顆',img:'https://picsum.photos/seed/omega3/100/100'},
+      {name:'舒妍平衡山藥聖潔莓',qty:'1顆',img:'https://picsum.photos/seed/chaste/100/100'},
+      {name:'暢彈納豆Q10',qty:'1顆',img:'https://picsum.photos/seed/q10/100/100'},
+    ]
+  },
+  '基礎保健包-M301':{
+    brand:'Cofit', unit:'包',
+    subItems:[
+      {name:'綜合維他命膠囊',qty:'1顆',img:'https://picsum.photos/seed/multi3/100/100'},
+      {name:'益生菌粉包',qty:'1包',img:'https://picsum.photos/seed/probiotic/100/100'},
+      {name:'鈣鎂補充錠',qty:'2顆',img:'https://picsum.photos/seed/calcium/100/100'},
+    ]
+  }
+};
+
+/* ── Cart / Selection Flow ── */
+let cart=[];
+
+function toggleSelect(el,name,img,brand,type='regular'){
+  const idx=cart.findIndex(i=>i.name===name);
+  const pill=el.querySelector('.add-pill');
+  if(idx>=0){
+    cart.splice(idx,1);
+    el.classList.remove('selected');
+    pill.innerHTML='<i class="ri-add-line"></i>';
+  } else {
+    cart.push({name,img,brand,qty:1,type,el});
+    el.classList.add('selected');
+    pill.innerHTML='<i class="ri-checkbox-circle-fill"></i>';
+  }
+  updateSelBar();
+}
+
+function toggleManSelect(el,name,brand,qty){
+  const idx=cart.findIndex(i=>i.name===name);
+  const pill=el.querySelector('.add-pill');
+  if(idx>=0){
+    cart.splice(idx,1);
+    el.classList.remove('selected');
+    pill.innerHTML='<i class="ri-add-line"></i>';
+  } else {
+    const img=`https://picsum.photos/seed/${encodeURIComponent(name)}/100/100`;
+    cart.push({name,img,brand,qty,type:'manual'});
+    el.classList.add('selected');
+    pill.innerHTML='<i class="ri-checkbox-circle-fill"></i>';
+  }
+  updateSelBar();
+}
+
+function updateSelBar(){
+  const bar=document.getElementById('sel-bar');
+  const isConfirm=stk[stk.length-1]==='s-confirm';
+  if(!cart.length||isConfirm){bar.classList.remove('show');return;}
+  bar.classList.add('show');
+  document.getElementById('sel-count').textContent=cart.length;
+  const thumbs=document.getElementById('sel-thumbs');
+  const max=3, extra=Math.max(0,cart.length-max);
+  thumbs.innerHTML=cart.slice(0,max).map((item,i)=>
+    `<img class="sel-thumb" src="${item.img}" onerror="this.src='https://picsum.photos/seed/${i}t/100/100'">`
+  ).join('')+(extra?`<div class="sel-thumb-more">+${extra}</div>`:'');
+}
+
+function goConfirm(){
+  if(!cart.length)return;
+  const n=cart.length;
+  document.getElementById('conf-title').textContent=`確認紀錄清單 (${n})`;
+  document.getElementById('conf-submit-txt').textContent=`確認紀錄 (${n} 項)`;
+  const now=new Date();
+  const h=now.getHours(),m=now.getMinutes();
+  const ap=h<12?'上午':'下午', h12=h%12||12, mm=String(m).padStart(2,'0');
+  const y=now.getFullYear(),mo=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
+  document.getElementById('conf-dt-val').textContent=`${y}/${mo}/${d}  ${ap} ${h12}:${mm}`;
+  buildConfirmCards();
+  go('s-confirm');
+}
+
+function buildConfirmCards(){
+  document.getElementById('conf-cards').innerHTML=cart.map((item,idx)=>{
+    const qty=item.qty||1;
+    const isCustom=item.type==='custom';
+    const unit=isCustom?'包':'顆';
+    const brandName=item.brand.includes('·')?item.brand.split('·')[0].trim():item.brand;
+
+    // Badge for custom items
+    const badge=isCustom
+      ?`<span class="conf-custom-badge"><i class="ri-box-3-line" style="font-size:10px;"></i>客製化保健品</span>`
+      :'';
+
+    // Detail section
+    let detailHtml;
+    if(isCustom){
+      const bundle=customDB[item.name]||{subItems:[]};
+      detailHtml=`<div class="conf-bundle-hdr">組合包內含明細 (整包服用)</div>`+
+        bundle.subItems.map(s=>
+          `<div class="conf-bundle-row">
+            <div class="conf-bundle-left">
+              <img class="conf-bundle-img" src="${s.img}" onerror="this.src='https://picsum.photos/seed/${encodeURIComponent(s.name)}/100/100'">
+              <span class="conf-bundle-name">${s.name}</span>
+            </div>
+            <span class="conf-bundle-qty">${s.qty}</span>
+          </div>`
+        ).join('')+
+        `<div class="conf-bundle-footer">本資訊僅供紀錄參考，成分含量請以產品外包裝標示為準。</div>`;
+    } else {
+      const nuts=getNuts(item.name);
+      const nutrients=getNutrients(item.name);
+      detailHtml=
+        `<div class="conf-nut-hdr">關鍵成分</div>`+
+        nuts.map(n=>`<div class="conf-nut-row"><span class="conf-nut-name">${n.n}</span><span class="conf-nut-val">${n.v}</span></div>`).join('')+
+        `<div class="conf-nut-hdr">營養素</div>`+
+        nutrients.map(n=>`<div class="conf-nut-row"><span class="conf-nut-name">${n.n}</span><span class="conf-nut-val">${n.v}</span></div>`).join('')+
+        `<div class="conf-nut-note" id="conf-nut-note-${idx}">* 以上為本次攝取 ${qty} 顆 的營養換算含量</div>`+
+        `<div class="conf-nut-disclaimer">本資訊僅供紀錄參考，成分含量請以產品外包裝標示為準。</div>`;
+    }
+
+    return `<div class="conf-card" id="conf-card-${idx}">
+      <div class="conf-top-row">
+        <img class="p-img" style="width:40px;height:40px;${isCustom?'border:2px solid #169E6B;box-sizing:border-box;':''}" src="${item.img}" onerror="this.src='https://picsum.photos/seed/${idx}c/100/100'">
+        <div style="flex:1;min-width:0;">
+          <div class="conf-prod-name">${item.name}</div>
+          <div class="conf-prod-brand">${brandName}</div>
+        </div>
+        ${badge}
+        <div class="conf-del" onclick="removeConfirmItem(${idx})"><i class="ri-delete-bin-line"></i></div>
+      </div>
+      <div class="conf-divider"></div>
+      <div class="conf-qty-row">
+        <span class="conf-qty-lbl">本次攝取量</span>
+        <div class="conf-stepper">
+          <div class="conf-minus" onclick="confQty(${idx},-1)">−</div>
+          <span class="conf-qty-num" id="conf-qty-${idx}">${qty}</span>
+          <span class="conf-qty-unit">${unit}</span>
+          <div class="conf-plus" onclick="confQty(${idx},1)">+</div>
+        </div>
+      </div>
+      <div class="conf-divider"></div>
+      <div class="conf-detail-row" onclick="toggleConfDetail(${idx})">
+        <span class="conf-detail-lbl">詳細資訊</span>
+        <div class="conf-detail-toggle">
+          <span id="conf-dtxt-${idx}">展開</span>
+          <i class="ri-arrow-down-s-line" id="conf-darr-${idx}"></i>
+        </div>
+      </div>
+      <div class="${isCustom?'conf-bundle-section':'conf-nut-section'}" id="conf-nut-${idx}">${detailHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function deselectCartEl(item){
+  // deselect element stored in cart item (bprow/prow)
+  if(item.el){
+    item.el.classList.remove('selected');
+    const pill=item.el.querySelector('.add-pill');
+    if(pill) pill.innerHTML='<i class="ri-add-line"></i>';
+    const chev=item.el.querySelector('.chev');
+    if(chev) chev.innerHTML='<i class="ri-arrow-right-s-line"></i>';
+  }
+}
+
+function removeConfirmItem(idx){
+  const removed=cart[idx];
+  // deselect from home recent list
+  document.querySelectorAll('#home-recent-list .rec-row').forEach(row=>{
+    const nameEl=row.querySelector('.rec-name');
+    if(nameEl&&nameEl.textContent===removed.name){
+      row.classList.remove('selected');
+      row.querySelector('.add-pill').innerHTML='<i class="ri-add-line"></i>';
+    }
+  });
+  // deselect from manual recent list
+  document.querySelectorAll('#h-man .man-rec').forEach(row=>{
+    const nameEl=row.querySelector('.man-rec-name');
+    if(nameEl&&nameEl.textContent===removed.name){
+      row.classList.remove('selected');
+      row.querySelector('.add-pill').innerHTML='<i class="ri-add-line"></i>';
+    }
+  });
+  // deselect from brand product / product name rows
+  deselectCartEl(removed);
+  cart.splice(idx,1);
+  updateSelBar();
+  if(!cart.length){back();return;}
+  const n=cart.length;
+  document.getElementById('conf-title').textContent=`確認紀錄清單 (${n})`;
+  document.getElementById('conf-submit-txt').textContent=`確認紀錄 (${n} 項)`;
+  buildConfirmCards();
+}
+
+function confQty(idx,d){
+  cart[idx].qty=Math.max(1,(cart[idx].qty||1)+d);
+  const q=cart[idx].qty;
+  document.getElementById(`conf-qty-${idx}`).textContent=q;
+  if(cart[idx].type!=='custom'){
+    const item=cart[idx];
+    const allNuts=[...getNuts(item.name),...getNutrients(item.name)];
+    const nutSection=document.getElementById(`conf-nut-${idx}`);
+    if(nutSection){
+      nutSection.querySelectorAll('.conf-nut-val').forEach((el,i)=>{
+        if(allNuts[i]) el.textContent=scaleNutVal(allNuts[i].v,q);
+      });
+      const noteEl=document.getElementById(`conf-nut-note-${idx}`);
+      if(noteEl) noteEl.textContent=`* 以上為本次攝取 ${q} 顆 的營養換算含量`;
+    }
+  }
+}
+
+function toggleConfDetail(idx){
+  const sec=document.getElementById(`conf-nut-${idx}`);
+  const arr=document.getElementById(`conf-darr-${idx}`);
+  const lbl=document.getElementById(`conf-dtxt-${idx}`);
+  const open=sec.style.display==='block';
+  sec.style.display=open?'none':'block';
+  arr.classList.toggle('up',!open);
+  lbl.textContent=open?'展開':'收合';
+}
+
+function submitAllRecords(){
+  const n=cart.length;
+  // reset bprow/prow selections via stored el references
+  cart.forEach(item=>deselectCartEl(item));
+  cart=[];
+  // reset home checkmarks
+  document.querySelectorAll('#home-recent-list .rec-row').forEach(row=>{
+    row.classList.remove('selected');
+    row.querySelector('.add-pill').innerHTML='<i class="ri-add-line"></i>';
+  });
+  // reset manual checkmarks
+  document.querySelectorAll('#h-man .man-rec').forEach(row=>{
+    row.classList.remove('selected');
+    row.querySelector('.add-pill').innerHTML='<i class="ri-add-line"></i>';
+  });
+  updateSelBar();
+  goHome();
+  // show toast (opacity fade, auto-dismiss)
+  const toast=document.getElementById('succ-toast');
+  document.getElementById('succ-toast-txt').textContent=`已經紀錄 ${n} 項保健品`;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),2500);
+}
+
+/* ── Drum Date+Time Picker ── */
+const drumAmPm=['上午','下午'];
+const drumHours=['01','02','03','04','05','06','07','08','09','10','11','12'];
+const drumMins=['00','05','10','15','20','25','30','35','40','45','50','55'];
+let drumDates=[];
+
+function buildDrumDates(){
+  const t=new Date();
+  drumDates=[];
+  for(let i=-3;i<=3;i++){
+    const d=new Date(t);
+    d.setDate(t.getDate()+i);
+    const wdays=['日','一','二','三','四','五','六'];
+    const label=i===0?'今天':i===1?'明天':i===-1?'昨天':`${d.getMonth()+1}/${d.getDate()} 週${wdays[d.getDay()]}`;
+    drumDates.push({label,y:d.getFullYear(),m:String(d.getMonth()+1).padStart(2,'0'),d:String(d.getDate()).padStart(2,'0')});
+  }
+}
+
+function fillDrumCol(id,items){
+  const col=document.getElementById(id);
+  col.innerHTML='<div class="drum-item" style="pointer-events:none;"></div>'+
+    items.map(it=>`<div class="drum-item">${it}</div>`).join('')+
+    '<div class="drum-item" style="pointer-events:none;"></div>';
+}
+
+function openDrum(){
+  buildDrumDates();
+  fillDrumCol('drum-date',drumDates.map(d=>d.label));
+  fillDrumCol('drum-ampm',drumAmPm);
+  fillDrumCol('drum-hr',drumHours);
+  fillDrumCol('drum-min',drumMins);
+
+  // parse current conf-dt-val: "2026/04/15  上午 09:30"
+  const raw=document.getElementById('conf-dt-val').textContent.trim();
+  const parts=raw.split(/\s+/);
+  const dateStr=parts[0]||'';
+  const ampm=parts[1]||'上午';
+  const timeStr=parts[2]||'09:30';
+  const [hStr,minStr]=timeStr.split(':');
+  const hr=parseInt(hStr,10)||9;
+  const minV=parseInt(minStr,10)||30;
+
+  // find indices
+  const _di=drumDates.findIndex(d=>`${d.y}/${d.m}/${d.d}`===dateStr);
+  const dateIdx=_di>=0?_di:3; // default to today (index 3 in 7-day window)
+  const ampmIdx=ampm==='下午'?1:0;
+  const hrIdx=Math.max(0,drumHours.findIndex(h=>parseInt(h)===hr));
+  const roundedMin=Math.round(minV/5)*5;
+  const minIdx=Math.max(0,drumMins.findIndex(m=>parseInt(m)===roundedMin));
+
+  // scroll to initial positions (after brief delay for DOM render)
+  requestAnimationFrame(()=>{
+    document.getElementById('drum-date').scrollTop=dateIdx*50;
+    document.getElementById('drum-ampm').scrollTop=ampmIdx*50;
+    document.getElementById('drum-hr').scrollTop=hrIdx*50;
+    document.getElementById('drum-min').scrollTop=minIdx*50;
+  });
+
+  document.getElementById('drumOverlay').classList.add('show');
+  document.getElementById('drumPanel').classList.add('open');
+}
+
+function closeDrum(){
+  document.getElementById('drumOverlay').classList.remove('show');
+  document.getElementById('drumPanel').classList.remove('open');
+}
+
+function confirmDrum(){
+  const dateIdx=Math.min(drumDates.length-1,Math.max(0,Math.round(document.getElementById('drum-date').scrollTop/50)));
+  const ampmIdx=Math.min(1,Math.max(0,Math.round(document.getElementById('drum-ampm').scrollTop/50)));
+  const hrIdx=Math.min(11,Math.max(0,Math.round(document.getElementById('drum-hr').scrollTop/50)));
+  const minIdx=Math.min(11,Math.max(0,Math.round(document.getElementById('drum-min').scrollTop/50)));
+
+  const dv=drumDates[dateIdx];
+  const ap=drumAmPm[ampmIdx];
+  const hr=drumHours[hrIdx];
+  const mn=drumMins[minIdx];
+  document.getElementById('conf-dt-val').textContent=`${dv.y}/${dv.m}/${dv.d}  ${ap} ${hr}:${mn}`;
+  closeDrum();
 }
 </script>
 </body>
