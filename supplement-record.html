@@ -387,7 +387,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
 .custom-badge{display:inline-flex;align-items:center;gap:3px;background:#E6F7F4;border:1px solid #B2DFDB;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:600;color:#169E6B;flex-shrink:0;margin-right:4px;}
 .custom-badge i{font-size:11px;}
 .rec-row.custom-pkg .rec-name{color:#004F51;}
-.rec-row.custom-pkg .p-img{border:2px solid #169E6B;box-sizing:border-box;}
+.rec-row.custom-pkg .p-img{}
 .conf-custom-badge{display:inline-flex;align-items:center;gap:3px;background:#E6F7F4;border-radius:8px;padding:2px 8px;font-size:11px;font-weight:600;color:#169E6B;margin-right:4px;flex-shrink:0;}
 .conf-bundle-section{padding:0;display:none;}
 .conf-bundle-hdr{font-size:13px;font-weight:600;color:#374151;padding:12px 20px 8px;background:#FAFAFA;border-top:1px solid #F9FAFB;}
@@ -468,13 +468,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
         <div class="rec-row custom-pkg" onclick="toggleSelect(this,'40代女生包-W407','https://picsum.photos/seed/w407/100/100','Cofit','custom')">
           <img class="p-img" src="https://picsum.photos/seed/w407/100/100">
           <div class="rec-info"><div class="rec-name">40代女生包-W407</div><div class="rec-meta">Cofit · 1包</div></div>
-          <span class="custom-badge"><i class="ri-box-3-line"></i>客製化保健品</span>
           <div class="add-pill"><i class="ri-add-line"></i></div>
         </div>
         <div class="rec-row custom-pkg" onclick="toggleSelect(this,'基礎保健包-M301','https://picsum.photos/seed/m301/100/100','Cofit','custom')">
           <img class="p-img" src="https://picsum.photos/seed/m301/100/100">
           <div class="rec-info"><div class="rec-name">基礎保健包-M301</div><div class="rec-meta">Cofit · 1包</div></div>
-          <span class="custom-badge"><i class="ri-box-3-line"></i>客製化保健品</span>
           <div class="add-pill"><i class="ri-add-line"></i></div>
         </div>
         <div class="rec-row">
@@ -794,7 +792,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
   <div class="sb"><span class="sb-time light">9:41</span><div class="sb-icons" style="color:#374151"><i class="ri-signal-wifi-3-fill" style="font-size:13px"></i><i class="ri-wifi-fill" style="font-size:14px"></i><i class="ri-battery-fill" style="font-size:16px"></i></div></div>
   <div class="nav" style="border-bottom:1px solid #F2F2F2;padding:4px 16px 10px;">
     <div class="ic" onclick="back()"><i class="ri-arrow-left-s-line"></i></div>
-    <div class="nav-title sm" id="conf-title">確認紀錄清單 (0)</div>
+    <div class="nav-title sm" id="conf-title">確認紀錄清單</div>
     <div class="ic"></div>
   </div>
   <div class="scroll" style="padding:16px 20px;">
@@ -808,7 +806,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#CDD5DB;min-height:100vh;d
     <button class="conf-btn-back" onclick="back()">返回修改</button>
     <button class="conf-btn-confirm" onclick="submitAllRecords()">
       <i class="ri-checkbox-circle-line"></i>
-      <span id="conf-submit-txt">確認紀錄 (0 項)</span>
+      <span id="conf-submit-txt">確認紀錄</span>
     </button>
   </div>
 </div>
@@ -1611,8 +1609,8 @@ function updateSelBar(){
 function goConfirm(){
   if(!cart.length)return;
   const n=cart.length;
-  document.getElementById('conf-title').textContent=`確認紀錄清單 (${n})`;
-  document.getElementById('conf-submit-txt').textContent=`確認紀錄 (${n} 項)`;
+  document.getElementById('conf-title').textContent=`確認紀錄清單`;
+  document.getElementById('conf-submit-txt').textContent=`確認紀錄`;
   const now=new Date();
   const h=now.getHours(),m=now.getMinutes();
   const ap=h<12?'上午':'下午', h12=h%12||12, mm=String(m).padStart(2,'0');
@@ -1631,7 +1629,7 @@ function buildConfirmCards(){
 
     // Badge for custom items
     const badge=isCustom
-      ?`<span class="conf-custom-badge"><i class="ri-box-3-line" style="font-size:10px;"></i>客製化保健品</span>`
+      ?''
       :'';
 
     // Detail section
@@ -1729,8 +1727,8 @@ function removeConfirmItem(idx){
   updateSelBar();
   if(!cart.length){back();return;}
   const n=cart.length;
-  document.getElementById('conf-title').textContent=`確認紀錄清單 (${n})`;
-  document.getElementById('conf-submit-txt').textContent=`確認紀錄 (${n} 項)`;
+  document.getElementById('conf-title').textContent=`確認紀錄清單`;
+  document.getElementById('conf-submit-txt').textContent=`確認紀錄`;
   buildConfirmCards();
 }
 
